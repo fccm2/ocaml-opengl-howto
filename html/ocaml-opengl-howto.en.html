@@ -1,0 +1,805 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Beginning with OpenGL in OCaml</title>
+  <link href="../ocaml-icon.png" rel="shortcut icon" />
+  <meta http-equiv="content-type" content="text/html; charset=utf8" />
+  <meta name="keywords" content="ocaml, opengl, tutorial, documentation, beginner" />
+<style type="text/css">
+<!--
+
+body {
+  color: #000;
+  background-color: #BBB;
+}
+a:link,
+a:visited {
+  color: #66B;
+  font-weight: bold;
+  text-decoration: none;
+}
+a:hover { color: #55A; }
+a:active { color: #E38; }
+
+h1, h2, h3, h4 { color: #444; }
+h2 { padding-bottom: 2px; }
+
+a img { border:none; }
+
+/*  vim cmd
+
+:%s/="I dentifier"/="Idnt"/g
+:%s/="S tatement"/="Stat"/g
+:%s/="C onstant"/="Cnst"/g
+:%s/="C omment"/="Comm"/g
+:%s/="P reProc"/="PrPr"/g
+:%s/="M odule"/="Mod"/g
+:%s/="E rror"/="Err"/g
+*/
+
+
+
+.Type               { color: #00FF00; font-weight: bold; }
+.Module,     .Mod   { color: #8080FF; font-weight: bold; }
+.Constant,   .Cnst  { color: #FF40FF; font-weight: bold; }
+.Statement,  .Stat  { color: #FFFF00; font-weight: bold; }
+.Comment,    .Comm  { color: #00FFFF; font-weight: bold; }
+.Error,      .Err   { color: #FFFFFF; font-weight: bold; background-color: #ff6060; }
+.Identifier, .Idnt  { color: #00FFFF; font-weight: bold; }
+.PreProc,    .PrPr  { color: #8080FF; font-weight: bold; }
+.Alert              { color: #FF0000; font-weight: bold; }
+
+div.notice {
+  font-size: 0.8em;
+}
+
+span.mode {
+  font-size: 1.1em;
+  font-style: italic;
+}
+span.detl {
+  font-size: 0.8em;
+  margin-left: 0.6em;
+  padding-left: 0.6em;
+}
+ul#modes li {
+  margin-bottom: 0.5em;
+}
+
+hr {
+  margin-top: 2.2em;
+  margin-bottom: 1.4em;
+}
+
+div {
+  padding: 0.2em 1.8em 0.3em 1.8em;
+  margin:  0.2em 1.8em 0.3em 1.8em;
+}
+div.nb {  /* no spacing at the bottom */
+  padding: 0.2em 1.6em 0 1.8em;
+  margin:  0.2em 1.6em 0 1.8em;
+}
+div.nt {  /* no spacing at the top */
+  padding: 0 1.6em 0.3em 1.8em;
+  margin:  0 1.6em 0.3em 1.8em;
+}
+div.nbnt {  /* no spacing at the bottom and at the top */
+  padding: 0 1.6em 0 1.8em;
+  margin:  0 1.6em 0 1.8em;
+}
+
+p {
+  padding:0.3em; margin:0;
+  text-indent: 1.2em;
+}
+
+pre {
+  padding: 2px;
+  margin: 1px 8% 1px 6%;
+}
+code,
+pre {
+  background: #111;
+  color: #EEE;
+}
+
+/*
+#contact {
+  width:221px; height:18px; display:block;
+  background: url("data:image/png;base64,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") top left no-repeat;
+}
+*/
+
+#lang_switch { text-align:right; }
+#lang_switch a { color:#0F0; }
+
+-->
+</style>
+</head>
+<body>
+  <div id="lang_switch"><a href="./ocaml-opengl-howto.fr.html">lire en fran&ccedil;ais</a></div>
+
+  <h1>Beginning with OpenGL in OCaml</h1>
+  <h2 style="font-size: 0.9em; display:none">Quick-Start examples in OCaml with OpenGL</h2>
+
+  <div>
+    <!-- Preambule -->
+    Here are some examples, starting from the most simple,
+    that could maybe help you to begin with OpenGL in OCaml.
+  </div>
+
+  <hr />
+  <!-- ======================================================== -->
+
+  <div style="border:2px solid #FF0000;">
+    <span style="color:red; font-weight:bold;">Warning:</span> With OpenGL 3.X a deprecation model was introduced.
+    In the specifications it is explained as:<br />
+    <span style="font-style:italic; color:#00E;">"OpenGL 3.0 introduces a deprecation model in which certain features may be 
+    marked as deprecated. Deprecated features are expected to be completely 
+    removed from a future version of OpenGL."</span><br />
+    Most of this tutorial uses deprecated features. You can get "forward-compatible" examples
+    in the directory "TEST3" of the glMLite tarball.<br />
+    Also please note that "foreward-compatible" examples are more complicated, so this
+    tutorial is still interesting for beginning, and then switch to an OpenGL&nbsp;3.X
+    compatible model.
+  </div>
+
+  <div>
+    So maybe you will prefer the other tutorial about the 
+    <a href="ocaml-opengl-howto-fc.html">foreward compatible way</a>.
+  </div>
+
+  <hr />
+  <!-- ======================================================== -->
+
+  <ul>
+    <li><a href="#def_intro">Introduction</a></li>
+    <li><a href="#def_anim">The First Animation</a></li>
+    <li><a href="#def_cbi">The Interaction Callbacks</a></li>
+    <li><a href="#def_glu">The GLU Library</a></li>
+    <li><a href="#def_reshape">Reshape the Window</a></li>
+    <li><a href="#def_unproject">Unproject</a></li>
+    <li><a href="#def_further">Going Further</a></li>
+    <li><a href="#def_licence">License</a></li>
+  </ul>
+
+
+  <hr />
+  <!-- ======================================================== -->
+
+
+  <h2 id="def_intro">Introduction</h2>
+
+  <div>
+    <p>
+    OpenGL is a generic
+    <a href="http://en.wikipedia.org/wiki/Real-time_computing">real-time</a>
+    3D library. Its rendering can be hardware accelerated when a driver is
+    installed for the graphics-card, or it can be software rendered with the
+    <a href="http://www.mesa3d.org/">Mesa</a> library. So OpenGL is
+    available in a wide range of environments.
+    </p>
+  </div>
+
+  <div>
+    <p>
+    The examples presented on this web-page use the OCaml-OpenGL interface
+    <a href="http://decapode314.free.fr/ocaml/GL/">glMLite</a>.
+    You can have an overview of the modules that it provides through this ocamldoc generated
+    <a href="http://decapode314.free.fr/ocaml/GL/doc/">documentation</a>.
+    The GL module (the core OpenGL functions) provides links to the manual pages for each
+    functions of the OpenGL API.
+    </p>
+  </div>
+
+  <div class="nb">
+    All the scripts below can be executed with this command line:<br />
+    <code>&nbsp;ocaml -I +glMLite&nbsp; GL.cma Glut.cma &nbsp;demo.ml</code><br />
+    Or alternatly you can add the following instructions at the very beginning of your files:<br />
+    <code>
+    #!/usr/bin/env ocaml<br />
+    #directory "+glMLite/"<br />
+    #load "GL.cma"<br />
+    #load "Glut.cma"
+    </code><br />
+    Or if you prefer to compile to binary native code for the best performances,
+    use this command:<br />
+    <code>&nbsp;ocamlopt -I +glMLite&nbsp; GL.cmxa Glut.cmxa  demo.ml &nbsp;-o demo.exe</code><br />
+    (for Linux and MacOSX, the file extension .opt will be prefered over the MS one .exe)
+  </div>
+
+  <div>
+  <p>
+    Now let's have a look at the first example. Here is below a line-by-line explanation of it.
+  </p>
+  <p>
+    The first thing calling <strong>glutInit</strong>
+    <a href="http://www.opengl.org/resources/libraries/glut/spec3/node10.html"><img
+       src="./external.png" /></a>
+    with <code>Sys.argv</code> as parameter, will initialise the Glut library.
+    If the <code>Sys.argv</code> array contains parameters specific to OpenGL/Glut,
+    those parameters will be strip in the array returned by this function. This way
+    your application can parse this returned array without seeing the OpenGL parameters.
+  </p>
+  <p>
+    Then the window is created with <strong>glutCreateWindow</strong>
+    <a href="http://www.opengl.org/resources/libraries/glut/spec3/node16.html"><img
+       src="./external.png" /></a>,
+    the parameter is the title which will appear in the handle of the window.
+    It returns the ID of the created window, but here we can just ignore it.
+  </p>
+  <p>
+    As OpenGL is a graphics rendering library, we need to define a rendering callback
+    which will be called each time a new frame will be drawn.
+    Register this callback with <strong>glutDisplayFunc</strong>
+    <a href="http://www.opengl.org/resources/libraries/glut/spec3/node46.html"><img
+       src="./external.png" /></a>.
+     (We will examine the contents of the <strong>display</strong> callback later.)
+  </p>
+  <p>
+    Now the function <strong>glutMainLoop</strong>
+    <a href="http://www.opengl.org/resources/libraries/glut/spec3/node14.html"><img
+       src="./external.png" /></a>
+    will make the program enter in the main execution loop.
+    Depending on the Glut implementation you'r using this function never returns (in this
+    case exit the program with the exit function) or with more recent Glut this main loop
+    can be leaved with <strong>glutLeaveMainLoop</strong>.
+  </p>
+  <p>
+    (You can have more details about the Glut interface
+    <a href="http://decapode314.free.fr/ocaml/GL/doc/Glut.html">from there</a>.)
+  </p>
+  <p>
+    Now Let's have a description of the <strong>display</strong> callback.<br />
+
+    The first function clears the content of the window (the previous drawn frame), otherwise
+    the primitives are drawn above the previous drawn frame. This won't have any important
+    effect in this first example because the image is fix, but you will see the difference
+    in the next example if you remove this command.
+  </p>
+  <p>
+    Then an RGB color is defined with glColor3 with 3 floats that have to lie in the range
+    between 0.0 and 1.0. Here the color defined is the red, so all the primitives that will
+    follow will be drawn in this color, until the next call to glColor.
+    If no color is define, the default one is the white (the default background color is black.)<br />
+  </p>
+  <p>
+    Then the <strong>glBegin</strong>
+    <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glBegin.xml"><img
+       src="./external.png" /></a>
+    function announces that we will define a triangle.
+    So a triangle will be defined untill <strong>glEnd</strong> which tells that the primitive is ended.
+    Between these 2 functions have to lie at least three points which are defined with
+    <strong>glVertex2</strong>
+    <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glVertex.xml"><img
+       src="./external.png" /></a>.
+    It is possible to give more than one triangle between glBegin and glEnd, in which case to define
+    N triangles, you have to provide (N * 3) vertices.
+  </p>
+  </div>
+
+<pre>
+<span class="Stat">open</span> <span class="PrPr">GL</span>
+<span class="Stat">open</span> <span class="PrPr">Glut</span>
+
+<span class="Stat">let</span> display <span class="Cnst">()</span> <span class="Stat">=</span>
+  glClear <span class="Stat">[</span><span class="Cnst">GL_COLOR_BUFFER_BIT</span><span class="Stat">];</span>
+  glColor3 <span class="Stat">~</span><span class="Idnt">r</span>:<span class="Cnst">1.0</span> <span class="Stat">~</span><span class="Idnt">g</span>:<span class="Cnst">0</span>. <span class="Stat">~</span><span class="Idnt">b</span>:<span class="Cnst">0</span>.<span class="Stat">;</span>
+  glBegin <span class="Cnst">GL_TRIANGLES</span><span class="Stat">;</span>
+    glVertex2 <span class="Stat">(</span>-<span class="Cnst">1.0</span><span class="Stat">) (</span>-<span class="Cnst">1.0</span><span class="Stat">);</span>
+    glVertex2 <span class="Stat">(</span> <span class="Cnst">0.0</span><span class="Stat">) (</span> <span class="Cnst">1.0</span><span class="Stat">);</span>
+    glVertex2 <span class="Stat">(</span> <span class="Cnst">1.0</span><span class="Stat">) (</span>-<span class="Cnst">1.0</span><span class="Stat">);</span>
+  glEnd <span class="Cnst">()</span><span class="Stat">;</span>
+  glFlush <span class="Cnst">()</span><span class="Stat">;</span>
+<span class="Stat">;;</span>
+
+<span class="Stat">let</span> <span class="Cnst">()</span> <span class="Stat">=</span>
+  ignore<span class="Stat">(</span>glutInit <span class="PrPr">Sys</span>.argv<span class="Stat">);</span>
+  glutInitDisplayMode <span class="Stat">[</span><span class="Cnst">GLUT_SINGLE</span><span class="Stat">];</span>
+  ignore<span class="Stat">(</span>glutCreateWindow <span class="Stat">~</span><span class="Idnt">title</span>:<span class="Cnst">&quot;simple demo&quot;</span><span class="Stat">)</span><span class="Stat">;</span>
+  glutDisplayFunc <span class="Stat">~</span><span class="Idnt">display</span><span class="Stat">;</span>
+  glutMainLoop <span class="Cnst">()</span><span class="Stat">;</span>
+<span class="Stat">;;</span>
+</pre>
+
+
+  <div style="margin-left:14%;">
+    Here is what this script will output:
+  </div>
+
+  <img src="./simple-demo.png" style="margin:10px 16%;" />
+
+
+
+  <hr />
+  <!-- ======================================================== -->
+
+  <h2 id="def_anim">The First Animation</h2>
+
+  <div>
+  <p>
+    This second script is very close to the first one, with some modification
+    to make a very basic animation.
+  </p>
+  <p>
+    To make the animation fluid, the selected drawing mode with
+    <strong>glutInitDisplayMode</strong>
+    <a href="http://www.opengl.org/resources/libraries/glut/spec3/node12.html"><img
+       src="./external.png" /></a>
+    is the double buffered display, which means that there are two images to process
+    the rendering. One is displayed on the foreground of the drawing area, and
+    a second one lies in the background and this is this last one that is used by
+    drawing functions to draw the rendering, and this rendering is finished
+    the background buffer is swaped with the foreground buffer with the function
+    <strong>glutSwapBuffers</strong> which is called at the end of the <em>display</em>
+    callback. (If you use another windowing library than Glut, you will still find
+    equivalents to these functions that you will have to use to get a similar effect.)
+  </p>
+  <p>
+    An Idle callback is also defined. It is a function which is called when the computer
+    has temporarily nothing to do. This is often usefull while OpenGL programs are often
+    hard resource consumers. Here the Idle will call
+    <strong>glutPostRedisplay</strong>
+    <a href="http://www.opengl.org/resources/libraries/glut/spec3/node20.html"><img
+       src="./external.png" /></a>
+    which is a function that will request a new frame redraw at the end of the current
+    function.
+  </p>
+  <p>
+    A rotation is defined with <strong>glRotate</strong>
+    <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glRotate.xml"><img
+       src="./external.png" /></a>
+    based on the
+    <a href="https://ocaml.org/api/Sys.html#VALtime">Sys.time</a>.
+    function.
+  </p>
+  <p>
+    Another difference is a definition of a new color before each point, which
+    will produce a face filled as a gradient with three colors, from one at each point.
+    You can see the output on the image after the script source:
+  </p>
+  </div>
+
+
+
+<pre>
+<span class="Stat">open</span> <span class="PrPr">GL</span>
+<span class="Stat">open</span> <span class="PrPr">Glut</span>
+
+<span class="Stat">let</span> display <span class="Cnst">()</span> <span class="Stat">=</span>
+  glClear <span class="Stat">[</span><span class="Cnst">GL_COLOR_BUFFER_BIT</span><span class="Stat">];</span>
+  glRotate <span class="Stat">~</span><span class="Idnt">angle</span>:<span class="Stat">(</span><span class="PrPr">Sys</span>.time<span class="Cnst">()</span> <span class="Stat">*</span>. <span class="Cnst">0.2</span><span class="Stat">) ~</span><span class="Idnt">x</span>:<span class="Cnst">0.0</span> <span class="Stat">~</span><span class="Idnt">y</span>:<span class="Cnst">0.0</span> <span class="Stat">~</span><span class="Idnt">z</span>:<span class="Cnst">1.0</span><span class="Stat">;</span>
+  glBegin <span class="Cnst">GL_TRIANGLES</span><span class="Stat">;</span>
+  glColor3 <span class="Stat">~</span><span class="Idnt">r</span>:<span class="Cnst">1.0</span> <span class="Stat">~</span><span class="Idnt">g</span>:<span class="Cnst">0.0</span> <span class="Stat">~</span><span class="Idnt">b</span>:<span class="Cnst">0.0</span><span class="Stat">;</span>  glVertex2 <span class="Stat">(</span>-<span class="Cnst">1.0</span><span class="Stat">) (</span>-<span class="Cnst">1.0</span><span class="Stat">);</span>
+  glColor3 <span class="Stat">~</span><span class="Idnt">r</span>:<span class="Cnst">0.0</span> <span class="Stat">~</span><span class="Idnt">g</span>:<span class="Cnst">1.0</span> <span class="Stat">~</span><span class="Idnt">b</span>:<span class="Cnst">0.0</span><span class="Stat">;</span>  glVertex2 <span class="Stat">(</span> <span class="Cnst">0.0</span><span class="Stat">) (</span> <span class="Cnst">1.0</span><span class="Stat">);</span>
+  glColor3 <span class="Stat">~</span><span class="Idnt">r</span>:<span class="Cnst">0.0</span> <span class="Stat">~</span><span class="Idnt">g</span>:<span class="Cnst">0.0</span> <span class="Stat">~</span><span class="Idnt">b</span>:<span class="Cnst">1.0</span><span class="Stat">;</span>  glVertex2 <span class="Stat">(</span> <span class="Cnst">1.0</span><span class="Stat">) (</span>-<span class="Cnst">1.0</span><span class="Stat">);</span>
+  glEnd <span class="Cnst">()</span><span class="Stat">;</span>
+  glutSwapBuffers <span class="Cnst">()</span><span class="Stat">;</span>
+<span class="Stat">;;</span>
+
+<span class="Stat">let</span> <span class="Cnst">()</span> <span class="Stat">=</span>
+  ignore<span class="Stat">(</span>glutInit <span class="PrPr">Sys</span>.argv<span class="Stat">);</span>
+  glutInitDisplayMode <span class="Stat">[</span><span class="Cnst">GLUT_DOUBLE</span><span class="Stat">];</span>
+  ignore<span class="Stat">(</span>glutCreateWindow <span class="Stat">~</span><span class="Idnt">title</span>:<span class="Cnst">&quot;simple demo&quot;</span><span class="Stat">);</span>
+  glutDisplayFunc <span class="Stat">~</span><span class="Idnt">display</span><span class="Stat">;</span>
+  glutIdleFunc <span class="Stat">~</span><span class="Idnt">idle</span>:<span class="Stat">(</span>glutPostRedisplay<span class="Stat">);</span>
+  glutMainLoop <span class="Cnst">()</span><span class="Stat">;</span>
+<span class="Stat">;;</span>
+</pre>
+
+<div style="margin:10px 15%"><img src="./simple-demo.2.png" /></div>
+
+
+
+  <hr />
+  <!-- ======================================================== -->
+
+  <h2 id="def_cbi">The Interaction Callbacks</h2>
+
+  <div>
+  <p>
+    Here are the callback functions that allow the handling of the interactions with the
+    keyboard and the mouse:
+  </p>
+  </div>
+
+<!-- {{{ cb mouse, keyboard -->
+<pre>
+<span class="Stat">open</span> <span class="PreProc">GL</span>
+<span class="Stat">open</span> <span class="PreProc">Glut</span>
+
+<span class="Comm">(* mouse coordinates *)</span>
+<span class="Stat">let</span> xold <span class="Stat">=</span> ref <span class="Cnst">0</span>
+<span class="Stat">let</span> yold <span class="Stat">=</span> ref <span class="Cnst">0</span>
+
+<span class="Stat">let</span> b_down <span class="Stat">=</span> ref <span class="Cnst">false</span>
+
+<span class="Stat">let</span> angley <span class="Stat">=</span> ref <span class="Cnst">0</span>
+<span class="Stat">let</span> anglex <span class="Stat">=</span> ref <span class="Cnst">0</span>
+
+<span class="Stat">let</span> display <span class="Cnst">()</span> <span class="Stat">=</span>
+  glClear <span class="Stat">[</span><span class="Cnst">GL_COLOR_BUFFER_BIT</span><span class="Stat">]</span><span class="Stat">;</span>
+  glLoadIdentity <span class="Cnst">()</span><span class="Stat">;</span>
+  glRotate <span class="Statement">~</span><span class="Identifier">angle</span>:<span class="Statement">(</span><span class="Type">float</span><span class="Statement">(</span>- <span class="Statement">!</span>angley<span class="Statement">))</span> <span class="Statement">~</span><span class="Identifier">x</span>:<span class="Constant">1.0</span> <span class="Statement">~</span><span class="Identifier">y</span>:<span class="Constant">0.0</span> <span class="Statement">~</span><span class="Identifier">z</span>:<span class="Constant">0.0</span><span class="Statement">;</span>
+  glRotate <span class="Statement">~</span><span class="Identifier">angle</span>:<span class="Statement">(</span><span class="Type">float</span><span class="Statement">(</span>- <span class="Statement">!</span>anglex<span class="Statement">))</span> <span class="Statement">~</span><span class="Identifier">x</span>:<span class="Constant">0.0</span> <span class="Statement">~</span><span class="Identifier">y</span>:<span class="Constant">1.0</span> <span class="Statement">~</span><span class="Identifier">z</span>:<span class="Constant">0.0</span><span class="Statement">;</span>
+  glColor3 <span class="Statement">~</span><span class="Identifier">r</span>:<span class="Constant">0</span>. <span class="Statement">~</span><span class="Identifier">g</span>:<span class="Constant">1.0</span> <span class="Statement">~</span><span class="Identifier">b</span>:<span class="Constant">0</span>.<span class="Statement">;</span>
+  glutWireCube <span class="Statement">~</span><span class="Identifier">size</span>:<span class="Constant">1.0</span><span class="Statement">;</span>
+  glFlush <span class="Cnst">()</span><span class="Stat">;</span>
+  glutSwapBuffers <span class="Cnst">()</span><span class="Stat">;</span>
+<span class="Stat">;;</span>
+
+<span class="Comm">(* active mouse motion *)</span>
+<span class="Stat">let</span> motion <span class="Stat">~</span><span class="Idnt">x</span> <span class="Stat">~</span><span class="Idnt">y</span> <span class="Stat">=</span>
+  <span class="Stat">if</span> <span class="Stat">!</span>b_down <span class="Stat">then</span>  <span class="Comm">(* if the left button is down *)</span>
+  <span class="Stat">begin</span>
+ <span class="Comm">(* change the rotation angles according to the last position</span>
+<span class="Comm">    of the mouse and the new one *)</span>
+    anglex <span class="Stat">:=</span> <span class="Stat">!</span>anglex + <span class="Stat">(</span><span class="Stat">!</span>xold - x<span class="Stat">)</span><span class="Stat">;</span>
+    angley <span class="Stat">:=</span> <span class="Stat">!</span>angley + <span class="Stat">(</span><span class="Stat">!</span>yold - y<span class="Stat">)</span><span class="Stat">;</span>
+    glutPostRedisplay<span class="Cnst">()</span><span class="Stat">;</span>
+  <span class="Stat">end</span><span class="Stat">;</span>
+  xold <span class="Stat">:=</span> x<span class="Stat">;</span>  <span class="Comm">(* save mouse position *)</span>
+  yold <span class="Stat">:=</span> y<span class="Stat">;</span>
+<span class="Stat">;;</span>
+
+<span class="Comm">(* mouse button event *)</span>
+<span class="Stat">let</span> mouse <span class="Stat">~</span><span class="Idnt">button</span> <span class="Stat">~</span><span class="Idnt">state</span> <span class="Stat">~</span><span class="Idnt">x</span> <span class="Stat">~</span><span class="Idnt">y</span> <span class="Stat">=</span>
+  <span class="Stat">match</span> button, state <span class="Stat">with</span>
+  <span class="Comm">(* if we press the left button *)</span>
+  <span class="Stat">|</span> <span class="Cnst">GLUT_LEFT_BUTTON</span>, <span class="Cnst">GLUT_DOWN</span> <span class="Stat">-&gt;</span>
+      b_down <span class="Stat">:=</span> <span class="Cnst">true</span><span class="Stat">;</span>
+      xold <span class="Stat">:=</span> x<span class="Stat">;</span>  <span class="Comm">(* save mouse position *)</span>
+      yold <span class="Stat">:=</span> y<span class="Stat">;</span>
+  <span class="Comm">(* if we release the left button *)</span>
+  <span class="Stat">|</span> <span class="Cnst">GLUT_LEFT_BUTTON</span>, <span class="Cnst">GLUT_UP</span> <span class="Stat">-&gt;</span>
+      b_down <span class="Stat">:=</span> <span class="Cnst">false</span><span class="Stat">;</span>
+  <span class="Stat">|</span> <span class="Stat">_</span> <span class="Stat">-&gt;</span> <span class="Cnst">()</span>
+<span class="Stat">;;</span>
+
+<span class="Stat">let</span> keyboard <span class="Stat">~</span><span class="Idnt">key</span> <span class="Stat">~</span><span class="Idnt">x</span> <span class="Stat">~</span><span class="Idnt">y</span> <span class="Stat">=</span>
+  <span class="Stat">match</span> key <span class="Stat">with</span>
+  <span class="Stat">|</span> <span class="Cnst">'\027'</span> <span class="Comm">(* escape key *)</span>
+  <span class="Stat">|</span> <span class="Cnst">'q'</span> <span class="Stat">-&gt;</span> exit <span class="Cnst">0</span>
+  <span class="Stat">|</span> <span class="Stat">_</span> <span class="Stat">-&gt;</span> <span class="Cnst">()</span>
+<span class="Stat">;;</span>
+
+<span class="Stat">let</span> <span class="Cnst">()</span> <span class="Stat">=</span>
+  ignore<span class="Stat">(</span>glutInit <span class="PreProc">Sys</span>.argv<span class="Stat">)</span><span class="Stat">;</span>
+  glutInitDisplayMode <span class="Stat">[</span><span class="Cnst">GLUT_DOUBLE</span><span class="Stat">]</span><span class="Stat">;</span>
+  ignore<span class="Stat">(</span>glutCreateWindow <span class="Stat">~</span><span class="Idnt">title</span>:<span class="PreProc">Sys</span>.argv.<span class="Stat">(</span><span class="Cnst">0</span><span class="Stat">))</span><span class="Stat">;</span>
+  glutDisplayFunc <span class="Stat">~</span><span class="Idnt">display</span><span class="Stat">;</span>
+  glutKeyboardFunc <span class="Stat">~</span><span class="Idnt">keyboard</span><span class="Stat">;</span>
+  glutMouseFunc <span class="Stat">~</span><span class="Idnt">mouse</span><span class="Stat">;</span>
+  glutMotionFunc <span class="Stat">~</span><span class="Idnt">motion</span><span class="Stat">;</span>
+  glutMainLoop <span class="Cnst">()</span><span class="Stat">;</span>
+<span class="Stat">;;</span>
+</pre>
+<!-- }}} -->
+
+  <div>
+  <p>
+    (use the mouse to make rotate the cube)
+  </p>
+  </div>
+
+
+  <hr />
+  <!-- ======================================================== -->
+
+  <h2 id="def_glu">The GLU Library</h2>
+
+  <div>
+  <p>
+    The GLU library provides utility functions that are often usefull.
+    Those functions don't really provide new functionalities because
+    all the functions of the GLU library are defined with OpenGL functions.<br />
+    See the ocamldoc of the
+    <a href="http://decapode314.free.fr/ocaml/GL/doc/Glu.html">Glu module</a>
+  </p>
+  </div>
+
+<pre>
+#load "Glu.cma"
+<span class="Stat">open</span> <span class="PrPr">Glu</span>
+</pre>
+
+
+
+  <hr />
+  <!-- ======================================================== -->
+
+  <h2 id="def_reshape">Reshape the Window</h2>
+
+  <div>
+  <p>
+    If the window is not in fullscreen, it may happen that the user reshape the
+    window. In this case the projection matrix have to be readapted to the new
+    dimensions of the window, and also to its eventualy new aspect ratio.
+    To fix all this we use a <strong>reshape callback</strong> where the
+    new projection parameters will be set:
+  </p>
+  </div>
+
+<!-- {{{ reshape callback -->
+<pre>
+<span class="Stat">let</span> reshape <span class="Stat">~</span><span class="Idnt">width</span>:w <span class="Stat">~</span><span class="Idnt">height</span>:h <span class="Stat">=</span>
+
+  <span class="Comm">(* set viewport to be the entire window *)</span>
+  glViewport <span class="Cnst">0</span> <span class="Cnst">0</span> w h<span class="Stat">;</span>
+
+  <span class="Comm">(* aspect ratio of the window *)</span>
+  <span class="Stat">let</span> aspect <span class="Stat">=</span> <span class="Stat">(</span><span class="Type">float</span> w<span class="Stat">)</span> /. <span class="Stat">(</span><span class="Type">float</span> h<span class="Stat">)</span> <span class="Stat">in</span>
+
+  <span class="Comm">(* load the projection matrix to be modified *)</span>
+  glMatrixMode <span class="Cnst">GL_PROJECTION</span><span class="Stat">;</span>
+
+  <span class="Comm">(* reinitialise the projection matrix (to the identity matrix) *)</span>
+  glLoadIdentity <span class="Cnst">()</span><span class="Stat">;</span>
+
+  <span class="Comm">(* set the projection matrix,</span>
+<span class="Comm">     in other words: define the perspective view *)</span>
+  gluPerspective <span class="Stat">~</span><span class="Idnt">fovy</span>:<span class="Cnst">60.0</span> <span class="Stat">~</span><span class="Idnt">aspect</span> <span class="Stat">~</span><span class="Idnt">zNear</span>:<span class="Cnst">0.5</span> <span class="Stat">~</span><span class="Idnt">zFar</span>:<span class="Cnst">80.0</span><span class="Stat">;</span>
+
+  <span class="Comm">(* switch to modelview matrix in order to set scene *)</span>
+  glMatrixMode <span class="Cnst">GL_MODELVIEW</span><span class="Stat">;</span>
+<span class="Stat">;;</span>
+</pre>
+<!-- }}} -->
+
+  <div>
+  <p>
+    The <code>fovy</code> argument is very simple, it is the "Field Of View", in other words
+    the angle of the viewable area. The additional "Y" letter is because this angle is between
+    the left and the right, so along the vertical Y axis.<br />
+    High values for fovy will increase the perspective feeling, but too high values won't be
+    realistic anymore.<br />
+    Common values for fovy are between 45 and 60 degrees.
+  </p>
+  <p>
+    The <strong>zNear</strong> and <strong>zFar</strong> arguments are quite important,
+    they define the range along the Z axis (the axis of the look) between which the object
+    will be visible. So it's a common arror while beginning with OpenGL to put wrong values
+    and encounter problems with object that are not visible.<br />
+    But the trick is also not to put a too wide interval because this would reduce the
+    precision of the display of the depth in the image, in particular for object that
+    are very close and intersecting.
+    You can get more explanations about this in the Wikipedia article about the
+    <a href="http://en.wikipedia.org/wiki/Z-buffering">depth buffer</a>.
+    <br />
+
+    The smaller is the range between zNear and zFar, the more precise will be the display
+    of the depth,
+    <span style="color:#00E;">
+    So try to define these parameters to fit properly the dimensions of the elements that
+    are drawn in the 3D scene.</span>
+  </p>
+  <p>
+    The <em>reshape</em> callback will be called a first time during the initialisation,
+    so before the first frame rendering.
+  </p>
+  </div>
+
+<pre>
+  glutReshapeFunc <span class="Stat">~</span><span class="Idnt">reshape</span><span class="Stat">;</span>
+</pre>
+
+
+  <hr />
+  <!-- ======================================================== -->
+
+  <h2 id="def_unproject">Unproject</h2>
+
+  <div>
+  <p>
+    Here is an example demonstrating how to transform the mouse 2D coordinates from the window area
+    to 3D coordinates usable in the 3D scene:
+  </p>
+  </div>
+
+<!-- {{{ UnProject -->
+<pre>
+<span class="Stat">open</span> <span class="PreProc">GL</span>
+<span class="Stat">open</span> <span class="PreProc">Glu</span>
+<span class="Stat">open</span> <span class="PreProc">Glut</span>
+
+<span class="Comm">(* position of the mouse pointer *)</span>
+<span class="Stat">let</span> px <span class="Stat">=</span> ref <span class="Cnst">0.0</span>
+<span class="Stat">let</span> py <span class="Stat">=</span> ref <span class="Cnst">0.0</span>
+
+<span class="Comm">(* try to force refresh every &quot;min_refresh&quot; milliseconds *)</span>
+<span class="Stat">let</span> min_refresh <span class="Stat">=</span> <span class="Cnst">30</span>
+
+<span class="Comm">(* coordinate bounds of the window *)</span>
+<span class="Stat">let</span> x_min <span class="Stat">=</span> -<span class="Cnst">6.0</span> <span class="Stat">and</span> x_max <span class="Stat">=</span> <span class="Cnst">6.0</span>
+<span class="Stat">and</span> y_min <span class="Stat">=</span> -<span class="Cnst">6.0</span> <span class="Stat">and</span> y_max <span class="Stat">=</span> <span class="Cnst">6.0</span>
+<span class="Stat">and</span> z_min, z_max <span class="Stat">=</span> -<span class="Cnst">6.0</span>, <span class="Cnst">60.0</span> <span class="Stat">;;</span>
+
+<span class="Comm">(* left button down *)</span>
+<span class="Stat">let</span> ldown <span class="Stat">=</span> ref <span class="Cnst">false</span>
+
+
+<span class="Stat">let</span> display <span class="Cnst">()</span> <span class="Stat">=</span>
+  glClear <span class="Stat">[</span><span class="Cnst">GL_COLOR_BUFFER_BIT</span><span class="Stat">]</span><span class="Stat">;</span>
+  glLoadIdentity <span class="Cnst">()</span><span class="Stat">;</span>
+
+  glPointSize <span class="Cnst">5.0</span><span class="Stat">;</span>
+  glBegin <span class="Cnst">GL_POINTS</span><span class="Stat">;</span>
+
+  <span class="Stat">if</span> <span class="Stat">!</span>ldown
+  <span class="Stat">then</span> glColor3 <span class="Cnst">1.0</span> <span class="Cnst">0.0</span> <span class="Cnst">0.0</span>
+  <span class="Stat">else</span> glColor3 <span class="Cnst">1.0</span> <span class="Cnst">1.0</span> <span class="Cnst">0.0</span><span class="Stat">;</span>
+
+  <span class="Comm">(* just display the mouse pointer *)</span>
+  glVertex2 <span class="Stat">!</span>px <span class="Stat">!</span>py<span class="Stat">;</span>
+
+  glEnd <span class="Cnst">()</span><span class="Stat">;</span>
+
+  glFlush <span class="Cnst">()</span><span class="Stat">;</span>
+  glutSwapBuffers <span class="Cnst">()</span><span class="Stat">;</span>
+<span class="Stat">;;</span>
+
+
+<span class="Comm">(* convert the coordinates of the mouse</span>
+<span class="Comm">   from window coordinates to the local</span>
+<span class="Comm">   representation *)</span>
+<span class="Stat">let</span> reg_unproject_coords <span class="Stat">~</span><span class="Idnt">x</span> <span class="Stat">~</span><span class="Idnt">y</span> <span class="Stat">=</span>
+  <span class="Stat">let</span> mx, my, <span class="Stat">_</span> <span class="Stat">=</span> gluUnProjectUtil <span class="Stat">~</span><span class="Idnt">x</span> <span class="Stat">~</span><span class="Idnt">y</span> <span class="Stat">in</span>
+  px <span class="Stat">:=</span> mx<span class="Stat">;</span>
+  py <span class="Stat">:=</span> my<span class="Stat">;</span>
+<span class="Stat">;;</span>
+
+<span class="Comm">(* active mouse motion *)</span>
+<span class="Stat">let</span> motion <span class="Stat">~</span><span class="Idnt">x</span> <span class="Stat">~</span><span class="Idnt">y</span> <span class="Stat">=</span>
+  reg_unproject_coords <span class="Stat">~</span><span class="Idnt">x</span> <span class="Stat">~</span><span class="Idnt">y</span><span class="Stat">;</span>
+<span class="Stat">;;</span>
+
+<span class="Comm">(* passive mouse motion *)</span>
+<span class="Stat">let</span> passive <span class="Stat">~</span><span class="Idnt">x</span> <span class="Stat">~</span><span class="Idnt">y</span> <span class="Stat">=</span>
+  reg_unproject_coords <span class="Stat">~</span><span class="Idnt">x</span> <span class="Stat">~</span><span class="Idnt">y</span><span class="Stat">;</span>
+<span class="Stat">;;</span>
+
+<span class="Comm">(* mouse button event *)</span>
+<span class="Stat">let</span> mouse <span class="Stat">~</span><span class="Idnt">button</span> <span class="Stat">~</span><span class="Idnt">state</span> <span class="Stat">~</span><span class="Idnt">x</span> <span class="Stat">~</span><span class="Idnt">y</span> <span class="Stat">=</span>
+  reg_unproject_coords <span class="Stat">~</span><span class="Idnt">x</span> <span class="Stat">~</span><span class="Idnt">y</span><span class="Stat">;</span>
+  <span class="Stat">match</span> button, state <span class="Stat">with</span>
+  <span class="Stat">|</span> <span class="Cnst">GLUT_LEFT_BUTTON</span>, <span class="Cnst">GLUT_DOWN</span> <span class="Stat">-&gt;</span> ldown <span class="Stat">:=</span> <span class="Cnst">true</span><span class="Stat">;</span>
+  <span class="Stat">|</span> <span class="Cnst">GLUT_LEFT_BUTTON</span>, <span class="Cnst">GLUT_UP</span> <span class="Stat">-&gt;</span> ldown <span class="Stat">:=</span> <span class="Cnst">false</span><span class="Stat">;</span>
+  <span class="Stat">|</span> <span class="Stat">_</span> <span class="Stat">-&gt;</span> <span class="Cnst">()</span>
+<span class="Stat">;;</span>
+
+<span class="Stat">let</span> keyboard <span class="Stat">~</span><span class="Idnt">key</span> <span class="Stat">~</span><span class="Idnt">x</span> <span class="Stat">~</span><span class="Idnt">y</span> <span class="Stat">=</span>
+  <span class="Stat">match</span> key <span class="Stat">with</span>
+  <span class="Stat">|</span> <span class="Cnst">'q'</span> <span class="Stat">|</span> <span class="Cnst">'\027'</span> <span class="Stat">-&gt;</span> exit <span class="Cnst">0</span>
+  <span class="Stat">|</span> <span class="Stat">_</span> <span class="Stat">-&gt;</span> <span class="Cnst">()</span>
+<span class="Stat">;;</span>
+
+<span class="Stat">let</span> reshape <span class="Stat">~</span><span class="Idnt">width</span>:w <span class="Stat">~</span><span class="Idnt">height</span>:h <span class="Stat">=</span>
+  glViewport <span class="Cnst">0</span> <span class="Cnst">0</span> w h<span class="Stat">;</span>
+  glMatrixMode <span class="Cnst">GL_PROJECTION</span><span class="Stat">;</span>
+  glLoadIdentity <span class="Cnst">()</span><span class="Stat">;</span>
+  <span class="Stat">if</span> w <span class="Stat">&lt;</span><span class="Stat">=</span> h <span class="Stat">then</span>
+    glOrtho x_min x_max <span class="Stat">(</span>y_min <span class="Stat">*</span>. <span class="Type">float</span> h /. <span class="Type">float</span> w<span class="Stat">)</span>
+                        <span class="Stat">(</span>y_max <span class="Stat">*</span>. <span class="Type">float</span> h /. <span class="Type">float</span> w<span class="Stat">)</span> z_min z_max
+  <span class="Stat">else</span>
+    glOrtho <span class="Stat">(</span>x_min <span class="Stat">*</span>. <span class="Type">float</span> w /. <span class="Type">float</span> h<span class="Stat">)</span>
+            <span class="Stat">(</span>x_max <span class="Stat">*</span>. <span class="Type">float</span> w /. <span class="Type">float</span> h<span class="Stat">)</span> y_min y_max z_min z_max<span class="Stat">;</span>
+
+  glMatrixMode <span class="Cnst">GL_MODELVIEW</span><span class="Stat">;</span>
+  glLoadIdentity <span class="Cnst">()</span><span class="Stat">;</span>
+<span class="Stat">;;</span>
+
+<span class="Stat">let</span> idle <span class="Cnst">()</span> <span class="Stat">=</span>
+  glutPostRedisplay <span class="Cnst">()</span><span class="Stat">;</span>
+<span class="Stat">;;</span>
+
+<span class="Stat">let</span> gl_init <span class="Cnst">()</span> <span class="Stat">=</span>
+  glClearColor <span class="Cnst">0.5</span> <span class="Cnst">0.5</span> <span class="Cnst">0.5</span>  <span class="Cnst">0.0</span><span class="Stat">;</span>
+  glShadeModel <span class="Cnst">GL_FLAT</span><span class="Stat">;</span>
+<span class="Stat">;;</span>
+
+<span class="Stat">let</span> <span class="Cnst">()</span> <span class="Stat">=</span>
+  ignore<span class="Stat">(</span>glutInit <span class="PreProc">Sys</span>.argv<span class="Stat">)</span><span class="Stat">;</span>
+  glutInitDisplayMode <span class="Stat">[</span><span class="Cnst">GLUT_DOUBLE</span><span class="Stat">;</span> <span class="Cnst">GLUT_RGB</span><span class="Stat">]</span><span class="Stat">;</span>
+  glutInitWindowSize <span class="Cnst">600</span> <span class="Cnst">600</span><span class="Stat">;</span>
+  glutInitWindowPosition <span class="Cnst">100</span> <span class="Cnst">100</span><span class="Stat">;</span>
+  ignore<span class="Stat">(</span>glutCreateWindow <span class="PreProc">Sys</span>.argv.<span class="Stat">(</span><span class="Cnst">0</span><span class="Stat">))</span><span class="Stat">;</span>
+  glutSetCursor <span class="Cnst">GLUT_CURSOR_NONE</span><span class="Stat">;</span>
+
+  gl_init <span class="Cnst">()</span><span class="Stat">;</span>
+
+  glutDisplayFunc <span class="Stat">~</span><span class="Idnt">display</span><span class="Stat">;</span>
+  glutReshapeFunc <span class="Stat">~</span><span class="Idnt">reshape</span><span class="Stat">;</span>
+  glutIdleFunc <span class="Stat">~</span><span class="Idnt">idle</span><span class="Stat">;</span>
+  glutMouseFunc <span class="Stat">~</span><span class="Idnt">mouse</span><span class="Stat">;</span>
+  glutKeyboardFunc <span class="Stat">~</span><span class="Idnt">keyboard</span><span class="Stat">;</span>
+  glutMotionFunc <span class="Stat">~</span><span class="Idnt">motion</span><span class="Stat">;</span>
+  glutPassiveMotionFunc <span class="Stat">~</span><span class="Idnt">passive</span><span class="Stat">;</span>
+
+  glutMainLoop <span class="Cnst">()</span><span class="Stat">;</span>
+<span class="Stat">;;</span>
+</pre>
+<!-- }}} -->
+
+  <hr />
+  <!-- ======================================================== -->
+
+  <h2 id="def_further">Going Further</h2>
+
+  <div>
+  <p>
+    So this was a quite short introduction of OpenGL in OCaml, but OpenGL is not that
+    hard because it is a purely descriptive language.
+    <br />
+
+    For further going you will find a lot of tutorials around. But you have to know
+    that the reference documentation is the 
+    <a href="http://www.opengl-redbook.com/">Red-Book</a>.
+    And you will find a lot of the examples of the Red-Book converted to OCaml in 
+    the archive of <a href="http://decapode314.free.fr/ocaml/GL/">glMLite</a>,
+    in the directory named <strong>RedBook-Samples/</strong>.
+  </p>
+  </div>
+
+
+  <hr />
+  <!-- ======================================================== -->
+
+
+
+  <div>
+    <a href="http://www.fsf.org/licensing/licenses/fdl.html">GNU/FDL</a>
+    &nbsp; &copy; 2007 2008 &nbsp; Florent Monnier<br />
+    <!--
+    <div id="contact">&nbsp;</div>
+    -->
+  </div>
+
+  <!-- ======================================================== -->
+  <hr />
+
+
+  <h4 id="def_licence">Copying</h4>
+
+  <div class="notice">
+    This document is provided along the
+    <a href="http://www.fsf.org/licensing/licenses/fdl.html">FDL</a> license,
+    which means that you can copy it with or without modifications and provide it
+    to who you want, as long as you do this in respect to the license.<br />
+    You are also invited to send me an email to tell me what you thought of this document
+    <!--
+    <div id="contact">&nbsp;</div>
+    -->
+  </div>
+
+  <!-- ======================================================== -->
+  <hr />
+
+  <div class="notice">
+    Alternatively, you may also use this document under
+    <a href="http://creativecommons.org/licenses/by-sa/2.5/"
+    >CC-by-sa license</a>
+    (any version).
+  </div>
+
+  <hr />
+
+  <div>
+    Camelly Yours!<br />
+  </div>
+
+  <div style="margin-top: 1.2em; border:0;">
+    <a href="https://ocaml.org" title="OCaml website"
+      ><img src="../ocaml-logo.png"
+         alt="The OCaml Language" style="border: none;" /></a>
+  </div>
+
+  <div>
+    &nbsp;
+  </div>
+
+</body>
+</html>
+<!-- vim: sw=2 sts=2 ts=2 et fdm=marker nowrap
+ -->
