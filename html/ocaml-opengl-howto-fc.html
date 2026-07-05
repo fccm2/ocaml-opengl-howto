@@ -1,0 +1,1868 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!-- {{{ head -->
+<head>
+  <title>Beginning with OpenGL in OCaml</title>
+  <link href="../ocaml-icon.png" rel="shortcut icon" />
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta name="keywords" content="ocaml, opengl, tutorial, documentation, beginner" />
+  <meta name="Author" content="Florent Monnier" />
+  <meta name="Generator" content="Vim and my li'l fingers" />
+<!--
+
+The pieces of code have been highlighted to HTML with this command line:
+$ vim -c ':TOhtml' -c ':w' -c ':q' -c ':q' file.ml
+
+And with this in the file ~/.vimrc:
+
+" Export to XHTML Customizations:
+:syn on
+:colors ron
+:let html_number_lines = 0
+:let use_xhtml = 1
+:let html_use_css = 1
+
+-->
+<style type="text/css">
+<!--
+
+body {
+  color: #000;
+  background-color: #BBB;
+  padding: 10px 3% 20px 2%;
+}
+a:link,
+a:visited {
+  color: #66B;
+  font-weight: bold;
+  text-decoration: none;
+}
+a:hover { color: #44C; background-color:#CCC; }
+a:active { color: #E38; }
+
+h1, h2, h3, h4 { color: #444; }
+h2 { padding-bottom: 2px; }
+h3 { padding-bottom: 0; padding-top: 0.8em; }
+
+h1 { font-size: 1.8em; }
+h2 { font-size: 1.4em; }
+h3 { font-size: 1.2em; }
+h4 { font-size: 1.0em; }
+
+a img { border:none; }
+
+/*  vim cmd
+
+:%s/="I dentifier"/="Idnt"/g
+:%s/="S tatement"/="Stat"/g
+:%s/="C onstant"/="Cnst"/g
+:%s/="C omment"/="Comm"/g
+:%s/="P reProc"/="PrPr"/g
+:%s/="M odule"/="Mod"/g
+:%s/="E rror"/="Err"/g
+*/
+
+.Type               { color: #00FF00; font-weight: bold; background-color: #000000; }
+.Module,     .Mod   { color: #8080FF; font-weight: bold; background-color: #000000; }
+.Constant,   .Cnst  { color: #FF40FF; font-weight: bold; background-color: #000000; }
+.Statement,  .Stat  { color: #FFFF00; font-weight: bold; background-color: #000000; }
+.Comment,    .Comm  { color: #00FFFF; font-weight: bold; background-color: #000000; }
+.Error,      .Err   { color: #FFFFFF; font-weight: bold; background-color: #ff6060; }
+.Identifier, .Idnt  { color: #00FFFF; font-weight: bold; background-color: #000000; }
+.PreProc,    .PrPr  { color: #8080FF; font-weight: bold; background-color: #000000; }
+.Alert              { color: #FF0000; font-weight: bold; background-color: #000000; }
+
+div.notice {
+  font-size: 0.8em;
+}
+
+span.mode {
+  font-size: 1.1em;
+  font-style: italic;
+}
+span.detl {
+  font-size: 0.8em;
+  margin-left: 0.6em;
+  padding-left: 0.6em;
+}
+ul#modes li {
+  margin-bottom: 0.5em;
+}
+ul.toc {
+  margin-left: 2%;
+}
+ul.para {
+  margin-left: 4.0em;
+}
+
+hr {
+  margin-top: 2.2em;
+  margin-bottom: 1.4em;
+}
+
+div {
+  margin:  0.2em  10%  0.3em 1.8em;
+  padding: 0.2em 1.6em 0.3em 1.8em;
+}
+div.nb {  /* no spacing at the bottom */
+  margin:  0.2em  10%  0 1.8em;
+  padding: 0.2em 1.6em 0 1.8em;
+}
+div.nt {  /* no spacing at the top */
+  margin:  0  10%  0.3em 1.8em;
+  padding: 0 1.6em 0.3em 1.8em;
+}
+div.nbnt {  /* no spacing at the bottom and at the top */
+  margin:  0  10%  0 1.8em;
+  padding: 0 1.6em 0 1.8em;
+}
+
+p { padding:0.3em; margin:0; }
+
+pre {
+  padding: 2px;
+  margin: 6px 4% 6px 6%;
+}
+code,
+pre {
+  background: #111;
+  color: #EEE;
+}
+
+code.depr {
+  background: #AAA;
+  color: #555;
+}
+
+code.hili {
+  color:#00E;
+  background-color: #BBB;
+}
+
+.var { color:#700; }
+
+#contact {
+  width:221px; height:18px; display:block;
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN0AAAASCAYAAADfett7AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAiZSURBVGiB7dp7sNVVFQfwD/kKyRB8pImChhaaT8RJLSUd7KnUlGFaZj5HKx9Rappj/pHE9NDMEjMNlRFxFLV8FWkZYVooPgJzSiOfCQIVig9Q+uO7T+d3f5x74V7uTZnud+bMOb+912/vtfd67LXWPvSiF73oRS960Ys3Lo7Bcqzbg3MMw514oczV+Py+B+dcXfTDBp2g3xCboU/PsNMjGIfHK8/biVxGvT7srDre9HozsJqYj3tls3sKP8R6Iszdy+fWHpyvO3A5frYSmqH4MZ7FIjyDl/Bza4Di4ik89Hoz0YuewQJ8rdY2yRv7pLsWv+6g/zg5uSdhX2yCdbAtTpM1T7BmOeU15qSr4gj8ANuIMO7HDdih9B8qgrwHZ2Pt2vvr4+uYgQcxRU6FKj6FSyWUuaTMcYsVN+rj4q03EeHPktPlwzW6/XFNC17GlHEfxO34XK1/7/LeIHwbM3FhjeY9hWYZHii/x5W+VkY3EOPxh0J/mShCFV/At7A9rir8jSl9A/DNMu6DuLLQVXEWTsVwXC/7cnVtnjPwBOYVnq/B2Er/ERIh7K19vK3w8P0WfQfjjrLGS7GF7MdBFZqx+AZ2xlSR81XYSkLYEzBddOUkbcPavjgRN5b13YHviC5UcSguqjx3xuh2E/26X+Q1EbtU+tcta5gu+zAV+9TG+JDo+CaFj/vxC7yv9I8SnZ2J8yXkR1tPtosowG1ydF8u+cw0fBVfxs34nRjXWZV318JNOBO/FYMaXGj3rdDtIEL7lYQyl4mx3iYCamBYhe41/FQ88U0YUaHbptBV1zFOFPZxMaSHCj/nVGi2Ku/dJGHWFFGiKhZphq5Plt9/1hpvKes+pow5UYz2nrKWBkaIskzDc7hCDGAg7sZhomwXFR7v1nR6RPCfx3WiDJPEAO+UfYS/4p9YXHi+F4+Wvk3FkA4RhYfROE8c6SAcK0p3UPldVcbPihEvEge9WGR0MN5Zoduz0N4g+38VRpa9GVfor8PsMvfRlXc3w5GixBeW8cfgNxLmN7AjPqLzOFAc2zDZv4ml/f3luw8mi3OcKU5/gBj/6Mo425Z13KqpowNEl4+TtOTOsuajtXUQ/8X5omAfrbQNL21/0XbBl+Dvlecxhe7gStub8bAIvYFzCt3hNbp5Zf4Gzih0x1Ta1hHlrzJfL6TsLBtwVG1tJ+FlbFyeP13e+5GV40VxOlXUT7pTy7x7VNoGiGFNrbRNLPMeWBvvAsmtqt58LfH0Uypt0/CKtob8bivufXvh5Zna5npnS5h5MX4i+7tA01Fehu9W+Hnairni6WX+6h5di1dFfxoYXehmaOskb8VdledWxZx3yP5WT9OuFFLWLWuYLvrUCvuXcY6vtK0tDnBuhb8TC92JFbpNRT6LtJXl6Vgqur5CzL5YLLOBB2Sx14vSNjBLvGKD8b3EY19boXlJlGxXTS9MhHF1je4BbF3jZbl4yAaWlnmHaB+jC93NovSNz+2y4TvW6C/tYKzOYC/cJ6FKA4vkVKiHcfOlWFHFx/BLCWUbPL+1tNVD9HvFmTXwJzGc+v61wgGFJ+KAzhCHeZx447Fy6jYwS/OkHYTN5XSu4vJ25npEW4c7q3xPEZ2qtg+pPC8XvRwpJ95p+KSssXqadgUjZA3fEz1phb3EcKq6sUwzetuiRj+58nueOK7bRc4NzBLD3ZIVc6F5tedlhbn5tfYXZWPWK/2DxevUq4hzxTMMwZzStqgsqooXtDVMeL601+k21z62FON6pp3+rWrPT3UwVmcwGI+1aP+beL9+mmupz9lHBPmZ8qmjrhx1GcESK+5fKwwqPJHTso+2ldgbtZXhctGBxrvkpKjiH+JI62ilM+219608byX5+BD8UaKFhiFu1GKezqBhMI92QDNY9Keuo3PL99ZiWApfrdbT3trXZ0Wj6yoWSphTx4bl+7lummdlWIJ/ibd+bSW0tFaWrmCB5lqrGFB4WtLBnMvltL9Y8uaVYXWuR17SjE6WiPzXq/DXV9vwbh/Ja2ga+8baYqCEnt3F51j0F+VfUNr6SBS2umiMMbADmoVay7LRtqBFXx0drr27SsJzxDMNrbWPEqtv5Z17AneJwEb+j+Zr4GEJA+vCGlX6VqaAM6Qy212X/EuU/KGGR6RyR2T2rIRvRLGrVyOHi9FNKM9zpUBTLSaQ0Lg7sZ2kG1Xl3lOl+rcamCmRQz2nrmKO6NCIWvsB4rRaRTSdQncZ3ZX4t8T775J/Q5wspf8LummOVcFUya0mStK9QfmMkEJN33bfjMdfKPF+ZzFBlPwKCY8GSvVrd63L7nWcI8WCyRL2rY23Sy7zpS7w8zB2EgMZLlVekpsfKSfTi1JwOlkMaq4Y5JOyj6fgAxI+EmUdL1cO48QgTxBDXab7/qAwu4z93sLnHlLkebmjl9rBOJFp//I8X4pnX5R1byQh30gpoJCq6lOS0+0kxn6UrHuCGN5qobvCy2elfDtRM8l/RRR4XDvv9ASW4oOysVM1w56lUr7tKOTsI+HgquRGdczGJyREbFR1X5Cq5pWr8P4MqRpfoJn7kgjh3C7wc5EY2yVSRbtODHiyGMlZco92i+QowyXXvg/7SU4zu8W44zXv2U6RQslhhf+FXeCzFc6V65bp5fl5qT6f3YWx+opMqyHzV8RJjJPrChIZHFt+L5Y7uEma10iviuGf3gUeehx95P5iV537719PoH/hY5iuGVJXsJZcaO+s41O1IwwRIxikda60uhgmodt4rXlcR06CVnlNK+wup9zI7mCuoFF820nX93Fl6Cdy2r6DObaR039V96IXvWgXQyX/fVouoI+XK4Pz5N8ssyRNqGNLuURupCVD5Q8AT2h7j9uLDrAm/au8F92P/SQtGCqn6mNyTztN6xxtN7kkXi7h84DyziFS3u/FKqDX6HrRWfSTkKy/5PJzdN/Vy/8F/gNf/RRvVGFq6AAAAABJRU5ErkJggg==") top left no-repeat;
+}
+
+#lang_switch { text-align:right; }
+#lang_switch a { color:#0F0; }
+
+.warning {
+  border:2px solid #F00;
+  color:#F90;
+  background-color:#333;
+  padding:1em 2em;
+  margin:1em 2em 3em 0;
+  width: 60%;
+}
+-->
+</style>
+</head>
+<!-- }}} -->
+<body>
+  <!--
+  <div id="lang_switch"><a href="./ocaml-opengl-howto-fc.en.php">lire en fran&ccedil;ais</a></div>
+  -->
+
+  <!--
+  <div class="warning">
+    This tutorial is not finished yet, but I provide it in its
+    current state in case it could be usefull.
+  </div>
+  -->
+
+  <h1>Beginning with OpenGL in OCaml</h1>
+  <h2>OpenGL in OCaml, the forward compatible way</h2>
+
+  <div>
+    <!-- Preambule -->
+    <p>
+    In OpenGL 3.X a deprecation model was introduced.<br />
+    Here is a tutorial about how to write forward compatible
+    OpenGL programs in OCaml.<br />
+    You can adopt this forward compatible way even if you currently
+    use an OpenGL version 2.X<br />
+    </p>
+    <p>
+    If you prefer to learn the old model, or by curiosity you can see
+    <a href="./ocaml-opengl-howto.en.html">this old tutorial</a>.
+    </p>
+  </div>
+
+  <hr />
+  <!-- ======================================================== -->
+
+  <ul class="toc">
+    <li><a href="#def_intro">Introduction</a></li>
+    <li><a href="#def_depr">The Deprecation</a></li>
+    <li><a href="#def_bindings">In OCaml</a></li>
+    <li><a href="#def_windowing">Windowing</a></li>
+    <li><a href="#def_primitive">Primitives</a></li>
+    <li><a href="#def_quickstart">Quick Start</a></li>
+    <li><a href="#def_glutinit">Initialise with Glut</a></li>
+    <li><a href="#def_oglinit">Initialise OpenGL</a></li>
+    <li><a href="#def_displaycb">The display callback</a></li>
+    <li><a href="#def_shaders">Shaders</a></li>
+    <li><a href="#def_anim">The First Animation</a></li>
+    <li><a href="#def_matrices">Managing Matrices</a></li>
+    <li><a href="#def_proj">The projection Matrix</a></li>
+    <li><a href="#def_rotanim">Animated Rotation</a></li>
+    <li><a href="#def_callbacks">Glut Interaction Callbacks</a></li>
+    <li><a href="#def_timer">Timer</a></li>
+    <li><a href="#def_reshape">Reshape the Window</a></li>
+    <li><a href="#def_delete">Clean and Delete</a></li>
+    <li><a href="#def_indexeddata">Indexed Face Set</a></li>
+    <li><a href="#def_mixedbuf">Mixed Buffers</a></li>
+    <li><a href="#def_interpol">Interpolated Variables</a></li>
+    <li><a href="#def_compstat">Checking Shader Compile Status</a></li>
+    <li><a href="#def_depth">The Depth Buffer</a></li>
+    <li><a href="#def_cullface">Back-Face Culling</a></li>
+    <li><a href="#def_unproject">Unproject</a></li>
+    <li><a href="#def_further">Going Further</a></li>
+    <li><a href="#def_licence">License</a></li>
+  </ul>
+
+
+  <hr />
+  <!-- ======================================================== -->
+
+
+  <h2 id="def_intro">Introduction</h2>
+
+  <div>
+    <a href="http://en.wikipedia.org/wiki/OpenGL">OpenGL</a>
+    is a generic
+    <a href="http://en.wikipedia.org/wiki/Real-time_computing">real-time</a>
+    <a href="http://en.wikipedia.org/wiki/3D_computer_graphics">3D</a>
+    library. Its rendering can be hardware accelerated when a driver is
+    installed for the graphics-card, or it can be software rendered with the
+    <a href="http://www.mesa3d.org/">Mesa</a> library. So OpenGL is
+    available in a wide range of environments.
+  </div>
+
+
+  <h2 id="def_depr">The Deprecation</h2>
+
+  <div>
+    With OpenGL 3.X a deprecation model was introduced.<br />
+    In the specifications it is explained as:<br />
+    <span style="font-style:italic; color:#00E;">
+      "OpenGL 3.0 introduces a deprecation model
+      in which certain features may be marked as deprecated.<br />
+      Deprecated features are expected to be completely 
+      removed from a future version of OpenGL."</span>
+    <br />
+    This tutorial does not use any deprecated features, so the examples presented on this
+    page are believed to be <strong>"forward-compatible"</strong>.<br />
+    Also please note that you can do forward-compatible OpenGL programming even if
+    you are using an OpenGL 2.1 version, because the main change is not adding new features
+    but tagging as deprecated the old features.
+    <!--
+    Also please note that "forward-compatible" examples are more complicated, so you
+    may be interested to begin with the old model and then switch to the new model.
+    tutorial is still interesting for beginning, and then switch to an OpenGL&nbsp;3.X
+    compatible model.
+    -->
+  </div>
+
+
+  <h2 id="def_deprwhat">What is deprecated?</h2>
+
+  <div>
+    If you are new to OpenGL you can skip this paragraph, otherwise you could be
+    interested to know what <em>in brief</em> is now deprecated?<br />
+    The main feature removed is the "immediate-mode" which is drawing primitives
+    with <code class="depr">glBegin / ... / glVertex3 / glEnd</code>, now you should
+    use VBO instead. In fact only VBO should be used now, all the other drawing
+    methods "Vertex-Arrays" and "Display-Lists" are deprecated too.
+    You should not use any internal matrices of OpenGL which are
+    <code class="depr">GL_MODELVIEW / GL_PROJECTION / GL_TEXTURE</code>, this means
+    that all the associated functions are now deprecated too, a non-exhaustive
+    list of them being <code class="depr">glRotate / glTranslate / glScale</code> and
+    <code class="depr">glPushMatrix / glPopMatrix / glLoadIdentity / glMultMatrix /
+      glLoadMatrix</code>. And no projection matrix means no
+    <code class="depr">glFrustum / gluPerspective / glOrtho</code>.<br />
+    The "fixed-pipeline" is also deprecated which means that now GLSL shaders are
+    not optional but required to render all the primitives.
+    You should also probably avoid to use GLU.
+  </div>
+
+
+  <h2 id="def_bindings">In OCaml</h2>
+
+  <div>
+    The examples presented on this web-page use the OCaml-OpenGL interface
+    <a href="http://decapode314.free.fr/ocaml/GL/">glMLite</a>
+    (<a href="https://github.com/fccm/glMLite" alt="glMLite on GitHub">GH</a>).
+    You can have an overview of the modules that it provides through its ocamldoc generated
+    <a href="http://decapode314.free.fr/ocaml/GL/doc/">documentation</a>.
+    The GL module (the core OpenGL functions) provides links to the manual pages for each
+    functions of the OpenGL API.<br />
+    After each deprecated function there is "<span style="color:red; font-weight:bold;">Deprecated</span>"
+    written in red.<br />
+    Also if you do care to not use any deprecated feature you can compile glMLite so that
+    calling any deprecated function will raise an exception. To compile glMLite like so, use:<br />
+    <code>make <span style="color:yellow"><em>&lt;target&gt;</em></span> USE_GL3_CORE_PROFILE=OK</code>
+  </div>
+
+  <div>
+    All the scripts below can be executed with this command line:<br />
+    <code>&nbsp;ocaml -I +glMLite&nbsp; Glut.cma GL.cma bigarray.cma vertArray.cma VBO.cma &nbsp;demo.ml</code><br />
+  </div>
+
+  <div>
+    Or alternatly you can add the following instructions at the very beginning of your files:<br />
+  </div>
+
+<pre>
+<span class="Comm">#!/usr/bin/env ocaml</span>
+<span class="PrPr">#directory</span> <span class="Cnst">&quot;+glMLite&quot;</span>
+<span class="PrPr">#load</span> <span class="Cnst">&quot;Glut.cma&quot;</span>
+<span class="PrPr">#load</span> <span class="Cnst">&quot;GL.cma&quot;</span>
+<span class="PrPr">#load</span> <span class="Cnst">&quot;bigarray.cma&quot;</span>
+<span class="PrPr">#load</span> <span class="Cnst">&quot;vertArray.cma&quot;</span>
+<span class="PrPr">#load</span> <span class="Cnst">&quot;VBO.cma&quot;</span>
+</pre>
+
+  <div>
+    Or if you prefer to compile to binary native code for the best performances,
+    use this command:<br />
+    <code>ocamlopt -I +glMLite Glut.cmxa GL.cmxa bigarray.cmxa vertArray.cmxa VBO.cmxa  demo.ml -o demo.opt</code><br />
+  </div>
+
+
+  <hr />
+  <!-- ======================================================== -->
+
+  <h2 id="def_windowing">Windowing</h2>
+
+  <div>
+  <p>
+    First OpenGL only covers the 3D rendering, it does not handle the interaction
+    with the windowing system.<br />
+    For simple OpenGL demos we often use the
+    <a href="https://en.wikipedia.org/wiki/OpenGL_Utility_Toolkit">Glut</a>
+    library. It is portable, simple to use, and it is designed to work with
+    OpenGL.<br />
+    glMLite also provides a
+    <a href="http://decapode314.free.fr/ocaml/GL/doc/Glut.html"
+      >Glut module</a>.<br />
+    There are other solutions to handle windowing and user interactions:
+  </p>
+  </div>
+
+  <ul class="para">
+    <li>SDL with its ocaml bindings ocaml-sdl <em>(this lib is packaged)</em></li>
+    <li>The GtkGLarea of the GTK bindings LablGTK <em>(packaged)</em></li>
+    <li>LablTK <em>(packaged)</em></li>
+    <li>GLX with the Xlib with its ocaml bindings
+      <a href="http://decapode314.free.fr/ocaml/Xlib/">ocaml-xlib</a></li>
+    <li>SFML with its bindings
+      <a href="http://decapode314.free.fr/ocaml/SFML/">ocaml-sfml</a></li>
+  </ul>
+
+  <hr />
+  <!-- ======================================================== -->
+
+
+  <h2 id="def_primitive">Primitives</h2>
+
+  <div>
+  <p>
+    To draw things on screen we use primitives, and in OpenGL the primitives are very
+    low-level, there are points, lines (segments), and triangle faces.
+    The gl-enum for this is the
+    <a href="http://decapode314.free.fr/ocaml/GL/doc/GL.html#TYPEprimitive"
+      >type primitive</a> in the module GL.
+    Quadrilaterals (polygons with four sides) and polygons with more than four sides
+    are now deprecated in OpenGL, so we should only use triangle faces now,
+    what is anyway what we use the more.
+    So to create more complex objects we constitute meshes with adjacent triangles
+    what we call
+    <a href="http://en.wikipedia.org/wiki/Triangle_mesh">triangle meshes</a>.
+    So a mesh is a list of triangle faces, and a triangle face is made of three
+    vertices. A vertex is specified with 3 coordinates, these coordinates are
+    given as floats. The three components of a vertex are called <code>(x,y,z)</code>,
+    which are the <a href="http://en.wikipedia.org/wiki/Three-dimensional_space"
+      >coordinates along the three axes</a>.
+  </p>
+  </div>
+
+  <hr />
+  <!-- ======================================================== -->
+
+
+  <h2 id="def_quickstart">Quick Start</h2>
+
+  <div>
+  <p>
+  <!--
+    Now let's have a look at the first example:
+  -->
+    Now let's have a look at a simple example:
+  </p>
+  </div>
+
+<!-- {{{ simple hello world example -->
+<pre>
+<span class="Stat">open</span> <span class="PrPr">Glut</span>
+<span class="Stat">open</span> <span class="PrPr">GL</span>
+<span class="Stat">open</span> <span class="PrPr">VertArray</span>
+<span class="Stat">open</span> <span class="PrPr">VBO</span>
+
+<span class="Stat">let</span> display vbo shader_prog vertexPosAttrib <span class="Stat">=</span> <span class="Stat">function</span> <span class="Cnst">()</span> <span class="Stat">-&gt;</span>
+  glClear <span class="Stat">[</span><span class="Cnst">GL_COLOR_BUFFER_BIT</span><span class="Stat">]</span><span class="Stat">;</span>
+  glUseProgram shader_prog<span class="Stat">;</span>
+  glBindBuffer <span class="Cnst">GL_ARRAY_BUFFER</span> vbo<span class="Stat">;</span>
+  glEnableVertexAttribArray vertexPosAttrib<span class="Stat">;</span>
+  glVertexAttribPointerOfs32 vertexPosAttrib <span class="Cnst">3</span> <span class="PrPr">VAttr</span>.<span class="Cnst">GL_FLOAT</span> <span class="Cnst">false</span> <span class="Cnst">3</span> <span class="Cnst">0</span><span class="Stat">;</span>
+  glDrawArrays <span class="Cnst">GL_TRIANGLES</span> <span class="Cnst">0</span> <span class="Cnst">3</span><span class="Stat">;</span>
+  glutSwapBuffers <span class="Cnst">()</span>
+
+<span class="Stat">let</span> make_vbo <span class="Cnst">()</span> <span class="Stat">=</span>
+  <span class="Stat">let</span> vertex_data <span class="Stat">=</span>
+    <span class="PrPr">Bigarray</span>.<span class="PrPr">Array1</span>.of_array <span class="PrPr">Bigarray</span>.float32 <span class="PrPr">Bigarray</span>.c_layout <span class="Stat">[|</span>
+      -<span class="Cnst">1.0</span><span class="Stat">;</span> -<span class="Cnst">1.0</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span>
+       <span class="Cnst">0.0</span><span class="Stat">;</span>  <span class="Cnst">1.0</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span>
+       <span class="Cnst">1.0</span><span class="Stat">;</span> -<span class="Cnst">1.0</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span>
+    <span class="Stat">|]</span>
+  <span class="Stat">in</span>
+  <span class="Stat">let</span> id <span class="Stat">=</span> glGenBuffer <span class="Cnst">()</span> <span class="Stat">in</span>
+  glBindBuffer <span class="Cnst">GL_ARRAY_BUFFER</span> id<span class="Stat">;</span>
+  glBufferData <span class="Cnst">GL_ARRAY_BUFFER</span> <span class="Stat">(</span>ba_sizeof vertex_data<span class="Stat">)</span> vertex_data <span class="Cnst">GL_STATIC_DRAW</span><span class="Stat">;</span>
+  <span class="Stat">(</span>id<span class="Stat">)</span>
+
+<span class="Stat">let</span> vertex_shader_src <span class="Stat">=</span> <span class="Cnst">&quot;</span>
+<span class="Cnst">#version 130</span>
+<span class="Cnst">in vec3 VertexPosition;</span>
+<span class="Cnst">invariant gl_Position;</span>
+<span class="Cnst">void main () {</span>
+<span class="Cnst">  gl_Position = vec4(VertexPosition, 1.0);</span>
+<span class="Cnst">}&quot;</span>
+
+<span class="Stat">let</span> fragment_shader_src <span class="Stat">=</span> <span class="Cnst">&quot;</span>
+<span class="Cnst">#version 130</span>
+<span class="Cnst">out vec4 Color;</span>
+<span class="Cnst">void main() {</span>
+<span class="Cnst">  Color = vec4(1.0, 0.0, 0.0, 1.0);</span>
+<span class="Cnst">}&quot;</span>
+
+<span class="Stat">let</span> load_shaders <span class="Cnst">()</span> <span class="Stat">=</span>
+  <span class="Stat">let</span> vertexShaderID <span class="Stat">=</span> glCreateShader <span class="Cnst">GL_VERTEX_SHADER</span> <span class="Stat">in</span>
+  <span class="Stat">let</span> fragmentShaderID <span class="Stat">=</span> glCreateShader <span class="Cnst">GL_FRAGMENT_SHADER</span> <span class="Stat">in</span>
+
+  glShaderSource vertexShaderID vertex_shader_src<span class="Stat">;</span>
+  glShaderSource fragmentShaderID fragment_shader_src<span class="Stat">;</span>
+
+  glCompileShader vertexShaderID<span class="Stat">;</span>
+  glCompileShader fragmentShaderID<span class="Stat">;</span>
+
+  <span class="Stat">let</span> shader_prog <span class="Stat">=</span> glCreateProgram <span class="Cnst">()</span> <span class="Stat">in</span>
+  glAttachShader shader_prog vertexShaderID<span class="Stat">;</span>
+  glAttachShader shader_prog fragmentShaderID<span class="Stat">;</span>
+
+  glLinkProgram shader_prog<span class="Stat">;</span>
+  <span class="Stat">let</span> vertexPosAttrib <span class="Stat">=</span> glGetAttribLocation shader_prog <span class="Cnst">&quot;VertexPosition&quot;</span> <span class="Stat">in</span>
+  <span class="Stat">(</span>shader_prog, vertexPosAttrib<span class="Stat">)</span>
+
+<span class="Stat">let</span> <span class="Cnst">()</span> <span class="Stat">=</span>
+  ignore<span class="Stat">(</span>glutInit <span class="PrPr">Sys</span>.argv<span class="Stat">)</span><span class="Stat">;</span>
+  glutInitDisplayMode <span class="Stat">[</span><span class="Cnst">GLUT_DOUBLE</span><span class="Stat">]</span><span class="Stat">;</span>
+  ignore<span class="Stat">(</span>glutCreateWindow <span class="Stat">~</span><span class="Idnt">title</span>:<span class="PrPr">Sys</span>.argv.<span class="Stat">(</span><span class="Cnst">0</span><span class="Stat">))</span><span class="Stat">;</span>
+  <span class="Stat">let</span> vbo <span class="Stat">=</span> make_vbo <span class="Cnst">()</span> <span class="Stat">in</span>
+  <span class="Stat">let</span> sp, vp <span class="Stat">=</span> load_shaders <span class="Cnst">()</span> <span class="Stat">in</span>
+  glutDisplayFunc <span class="Stat">~</span><span class="Idnt">display</span>:<span class="Stat">(</span>display vbo sp vp<span class="Stat">)</span><span class="Stat">;</span>
+  glutMainLoop <span class="Cnst">()</span>
+</pre>
+
+  <div>
+  <p>
+    Alternatively you can use these 1.2 shaders, if your hardware does not
+    support GLSL version 1.3.
+  </p>
+  </div>
+
+<pre>
+<span class="Stat">let</span> vertex_shader_src <span class="Stat">=</span> <span class="Cnst">&quot;</span>
+<span class="Cnst">#version 120</span>
+<span class="Cnst">in vec3 VertexPosition;</span>
+<span class="Cnst">void main () {</span>
+<span class="Cnst">  gl_Position = vec4(VertexPosition, 1.0);</span>
+<span class="Cnst">}&quot;</span>
+
+<span class="Stat">let</span> fragment_shader_src <span class="Stat">=</span> <span class="Cnst">&quot;</span>
+<span class="Cnst">#version 120</span>
+<span class="Cnst">void main() {</span>
+<span class="Cnst">  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);</span>
+<span class="Cnst">}&quot;</span>
+</pre>
+
+<!-- }}} -->
+
+  <div style="margin-left:14%;">
+    This short program displays a single red triangle:
+  </div>
+
+  <img src="./simple-vbo.png" style="margin:10px 16%;" />
+
+
+  <div>
+  <p>
+    Here is below a line-by-line explanation of it.
+  </p>
+  </div>
+
+
+  <h3 id="def_glutinit">Initialise with Glut</h3>
+
+  <div>
+  <p>
+    Let's start looking at the <em>main</em> / the entry point,
+    the first function called is <strong>glutInit</strong>
+    <a href="http://www.opengl.org/resources/libraries/glut/spec3/node10.html"><img
+       src="./external.png" /></a>
+    with <code>Sys.argv</code> as parameter, it will initialise the Glut library.
+    If the <code>Sys.argv</code> array contains parameters specific to OpenGL/Glut,
+    those parameters will be stripped from the array returned by this function. This way
+    your application can parse this returned array without seeing the OpenGL parameters.
+  </p>
+  <p>
+    To make animations fluid we use
+    <a href="http://en.wikipedia.org/wiki/Multiple_buffering#Double_buffering_in_computer_graphics"
+      >double buffering</a>, which means that there are two images to process
+    the rendering. One is displayed on the foreground of the drawing area, and
+    a second one lies in the background and this is this last one that is used by
+    drawing functions to draw the rendering, and when this rendering is finished
+    the background buffer is swaped with the foreground buffer with the function
+    <strong>glutSwapBuffers</strong>
+    <a href="http://www.opengl.org/resources/libraries/glut/spec3/node21.html"><img
+       src="./external.png" /></a>
+    which is called at the end of the <em>display</em>
+    callback. If you use another windowing library than Glut, you will still find
+    equivalents to these functions that you will have to use to get a similar effect.
+    For example with OCamlSDL1 this is
+    <code><span class="PrPr">Sdlgl</span>.swap_buffers</code>
+    and with OCamlSDL2 this is
+    <code><span class="PrPr">Sdlgl</span>.swap_window</code>.
+    In ocaml-sfml it's
+    <code><span class="PrPr">SFRenderWindow</span>.display</code>, and
+    in Ocsfml it's the
+    <code>display</code> method of the class
+    <code>render_window</code> from the
+    <code><span class="PrPr">OcsfmlGraphics</span></code> module.
+    <br />
+    So we select double buffering with the parameter
+    <code>GLUT_DOUBLE</code>
+    that we provide to the function
+    <strong>glutInitDisplayMode</strong>
+    <a href="http://www.opengl.org/resources/libraries/glut/spec3/node12.html"><img
+       src="./external.png" /></a>.
+  </p>
+  <p>
+    Then the window is created with <strong>glutCreateWindow</strong>
+    <a href="http://www.opengl.org/resources/libraries/glut/spec3/node16.html"><img
+       src="./external.png" /></a>,
+    the parameter is the title which will appear in the handle of the window.
+    It returns the ID of the created window, but here we can just ignore it.
+  </p>
+  <p>
+    Then we create the <a href="http://en.wikipedia.org/wiki/Vertex_Buffer_Object">vbo</a>
+    and the <a href="https://en.wikipedia.org/wiki/OpenGL_Shading_Language">shader</a>
+    which will be used in the display callback.
+    We will explain vbo and shaders below.
+  </p>
+  <p>
+    As OpenGL is a graphics rendering library, we need to define a rendering callback
+    which will be called each time a new frame will be drawn.
+    Register this callback with <strong>glutDisplayFunc</strong>
+    <a href="http://www.opengl.org/resources/libraries/glut/spec3/node46.html"><img
+      src="./external.png" /></a>.
+    The display callback should have type <code>unit -&gt; unit</code>, but
+    we can provide additional parameters by <a href="http://en.wikipedia.org/wiki/Currying"
+      >partial application</a>.
+    We will examine the details of the <strong>display</strong> callback below.
+  </p>
+  <p>
+    Now the function <strong>glutMainLoop</strong>
+    <a href="http://www.opengl.org/resources/libraries/glut/spec3/node14.html"><img
+       src="./external.png" /></a>
+    will make the program enter in the main execution loop.
+    Depending on the Glut implementation you're using this function never returns (in this
+    case exit the program with the exit function) or with more recent Glut (such as OpenGlut
+    or FreeGlut) this main loop can be leaved with <strong>glutLeaveMainLoop</strong>.
+  </p>
+  </div>
+
+
+  <h3 id="def_oglinit">Initialise OpenGL</h3>
+
+  <div>
+  <p>
+    In OpenGL the way we should now provide the primitives data to the driver
+    (hardware or software) is with 
+    <a href="http://en.wikipedia.org/wiki/Vertex_Buffer_Object">VBO</a>, which is
+    a method to make reside the data in the memory of the graphics-card.
+    So there are two steps, first create the vbo and upload the data in its buffer,
+    we do this during the initialisation. Then during the main loop, in the display
+    callback we can call this vbo in order to draw its contents on screen.<br />
+    So this first step here in this script is made with the function
+    <span class="var">make_vbo</span>.
+    The variable <span class="var">vertex_data</span> contains one triangle
+    made of three vertices (one by line), each vertex is made of three floats
+    (the {X,Y,Z} coordinates).<br />
+    With <strong>glGenBuffer</strong>
+    <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glGenBuffers.xhtml"><img
+      src="./external.png" /></a>
+    we create an id to handle the VBO, then with
+    <strong>glBindBuffer</strong>
+    <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBindBuffer.xhtml"><img
+      src="./external.png" /></a>
+    we select this vbo as the active one for the following buffer operations,
+    which is <strong>glBufferData</strong>
+    <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBufferData.xhtml"><img
+      src="./external.png" /></a>
+    used to upload the contents of the bigarray to the video-device.
+    <code>GL_STATIC_DRAW</code> indicates that the data contained in the buffer
+    won't change.<br />
+    Finally <span class="var">make_vbo</span> returns the vbo id which will
+    be used in the display callback to draw its contents.
+  </p>
+  </div>
+
+
+  <h3 id="def_displaycb">The display callback</h3>
+
+  <div>
+  <p>
+    Now Let's have a quick look at the <strong>display</strong> callback,
+    before explaining the shader.
+    <br />
+    The first function clears the content of the window (the previous drawn frame), otherwise
+    the primitives are drawn above the previous drawn frame. This won't have any important
+    effect in this first example because the image is fixed, but you will see the difference
+    in the next example if you remove this command.
+    <br />
+    The function <strong>glUseProgram</strong>
+    <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glUseProgram.xhtml"><img
+      src="./external.png" /></a>
+    selects which shader to use to make the rendering of the
+    primitives (here there is only one shader program),
+    and glBindBuffer selects which vbo we want to use.
+    <br />
+    Then we have to connect or "pipe" the contents of the vbo buffer to the shader
+    so that the data will actually be rendered by the shader program.
+    We do this in several steps with
+    <strong>glEnableVertexAttribArray</strong>
+    <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glEnableVertexAttribArray.xhtml"><img
+      src="./external.png" /></a>
+    (enables this input in the shader),
+    <strong>glVertexAttribPointerOfs32</strong>
+    <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glVertexAttribPointer.xhtml"><img
+      src="./external.png" /></a>
+    (specifies the format of this input),
+    (you will understand better what those operations do after the explanation
+    of the shader).<br />
+    When the connections are done, we call glDrawArrays to actually
+    draw the primitive. Here we see that we request triangles primitives
+    with <code>GL_TRIANGLES</code> because in the buffer the data are generic,
+    it's only this primitive parameter and what is done in the shader from those
+    data that decides what the data are really.
+  </p>
+  </div>
+
+
+  <h3 id="def_shaders">Shaders</h3>
+
+  <div>
+  <p>
+    Now about the 
+    <a href="https://en.wikipedia.org/wiki/OpenGL_Shading_Language">shaders</a>
+    which is maybe the hardest part.<br />
+    Shaders are programs executed by the graphics-cards, they do the rendering
+    from the input data to produce the final image displayed on screen.<br />
+    The shader program is in fact made of two shaders, the "vertex shader"
+    and the "fragment shader". The vertex shader is executed first
+    and one time for each vertex (so it's called "vertex shader").
+    So for a triangle the vertex shader is called for each vertex
+    of the triangle, which provides 3 points in the window space
+    that OpenGL can use to
+    <a href="http://en.wikipedia.org/wiki/Rasterisation">rasterise</a>
+    the triangle in the window space, which produces a set of pixels.
+    The "fragment shader" is then executed for each pixel of the rasterised
+    primitive. By "each pixel" I mean pixels from the final rendered image.
+    It is called "fragment shader" and not "pixel shader" because it is
+    related to the
+    <a href="http://en.wiktionary.org/wiki/fragment#Noun">fragments</a>
+    of the rendered primitive.
+    It is also called "fragment shader" not "pixel shader" because several
+    objects may be projected on the same part of the 2D image (one farther,
+    and the other closer to the viewer), also it may happen that there
+    are no primitives drawn on some areas of the image (here in this example
+    the parts in black).<br />
+    The shaders in OpenGL are written in a progamming language named
+    <a href="http://en.wikipedia.org/wiki/GLSL">GLSL</a>. GLSL is very close
+    to the C programming language, with some features from C++.
+  </p>
+  <p>
+    The source code of the shaders are provided to OpenGL with the function
+    <strong>glShaderSource</strong>
+    <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glShaderSource.xhtml"><img
+      src="./external.png" /></a>
+    which takes it as a string, so that the glsl source code can be
+    embeded into an ocaml string as in this example with the two strings
+    <span class="var">vertex_shader_src</span> and
+    <span class="var">fragment_shader_src</span> in order to keep this
+    example simple, but often when shaders are more complex they are
+    written in separated files which are loaded into a string, so
+    then we can edit the shaders with the 
+    <a href="http://en.wikipedia.org/wiki/Syntax_highlighting"
+      >syntax highlighting</a> for GLSL, as below:
+  </p>
+
+
+<pre>
+<span class="Comm">// vertex shader</span>
+<span class="PrPr">#version </span><span class="Cnst">130</span>
+<span class="Type">in</span> <span class="Type">vec3</span> VertexPosition;
+invariant <span class="Type">gl_Position</span>;
+<span class="Type">void</span> main () {
+  <span class="Type">gl_Position</span> = <span class="Type">vec4</span>(VertexPosition, <span class="Cnst">1.0</span>);
+}
+</pre>
+
+
+  <p>
+    The first line in these shaders tell which GLSL version we use (here 1.3).
+  </p>
+  <p>
+    Here in this vertex shader we first declare the variable
+    <span class="var">VertexPosition</span>
+    which is declared with <span class="var">in</span> and <span class="var">vec3</span>.
+    <span class="var">vec3</span> is the type, a vector with three
+    components (3 floats). <span class="var">in</span> declares this variable
+    as an input of the vertex shader.
+    In the ocaml function load_shaders() there is this line of code:<br />
+<code><span class="Stat">let</span> vertexPosAttrib <span class="Stat">=</span> glGetAttribLocation shader_prog <span class="Cnst">&quot;VertexPosition&quot;</span> <span class="Stat">in</span></code>
+    <br />
+    so that this "attrib-location" is used later in the display callback to "pipe"
+    the data from the vbo buffer into this "input".
+    This connection is made with
+    <strong>glEnableVertexAttribArray</strong>
+    <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glEnableVertexAttribArray.xhtml"><img
+      src="./external.png" /></a>
+    and
+    <strong>glVertexAttribPointerOfs32</strong>
+    <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glVertexAttribPointer.xhtml"><img
+      src="./external.png" /></a>
+    with this variable <span class="var">vertexPosAttrib</span>.
+    The first function just enables to access this attribute.
+    The second one is trickier, let's have a look at its interface:
+  </p>
+<pre>
+<span class="Stat">val</span> glVertexAttribPointerOfs32 :
+        index:<span class="Type">int</span> <span class="Stat">-&gt;</span> size:<span class="Type">int</span> <span class="Stat">-&gt;</span>
+        data_type:<span class="PrPr">VAttr</span>.vertattr_data_type <span class="Stat">-&gt;</span>
+        normalized:<span class="Type">bool</span> <span class="Stat">-&gt;</span>
+        stride:<span class="Type">int</span> <span class="Stat">-&gt;</span> ofs:<span class="Type">int</span> <span class="Stat">-&gt;</span> <span class="Type">unit</span>
+</pre>
+  <p>
+    We use the glVertexAttribPointer* function that ends with "Ofs32" because in our ocaml
+    bigarray we used <code>Bigarray.float32</code> which means the atoms are 32 bits.
+    (In OpenGL there are also half precision 16 bits floats, that we can use with
+    Bigarray.int16_unsigned).<br />
+    The <span class="var">index</span> parameter is to tell for which "attrib"
+    we are giving parameters.<br />
+    The <span class="var">size</span> parameter tells how many components we have,
+    here it is 3 for our 3 floats (x,y,z).<br />
+    For the <span class="var">data_type</span> we give <code>GL_FLOAT</code>
+    no need to explain why.<br />
+    <span class="var">normalized</span> is for fixed-point data, not used here (read the 
+    <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glVertexAttribPointer.xhtml">man</a>
+    for more inforations).<br />
+    <span class="var">stride</span> and <span class="var">ofs</span>
+    are usefull when we provide several data kind in the same buffer, for example
+    RGB colors, normals and vertex coords. But this is not the case here so we put the size
+    of the coords which is 3 for <span class="var">stride</span>, and 0 for
+    <span class="var">ofs</span>.<br />
+  </p>
+  </div>
+
+  <div>
+  <p>
+    The output of the vertex shader should be the position of the vertex which will be used
+    for the rasterisation. Here we just set <span class="var">gl_Position</span> as the same value
+    than <span class="var">VertexPosition</span> with a cast from the type vec3 to vec4.
+    Here you see a similarity with C++ vec4 is used as a function where we add a fourth
+    component 1.0.<br />
+    &nbsp;
+  </p>
+
+
+<pre>
+<span class="Comm">// fragment shader</span>
+<span class="PrPr">#version </span><span class="Cnst">130</span>
+<span class="Type">out</span> <span class="Type">vec4</span> Color;
+<span class="Type">void</span> main() {
+  Color = <span class="Type">vec4</span>(<span class="Cnst">1.0</span>, <span class="Cnst">0.0</span>, <span class="Cnst">0.0</span>, <span class="Cnst">1.0</span>);
+}
+</pre>
+
+  <p>
+    In the fragment shader the purpose is to set the color of the pixel.<br />
+    Here we set an <a href="http://en.wikipedia.org/wiki/RGBA_color_space">RGBA</a>
+    value of (1.0,&nbsp;0.0,&nbsp;0.0,&nbsp;1.0), the maximum value being 1.0,
+    red is full and blue and green channels are zero, and there is no transparency.
+    So our triangle appears colored in red.
+  </p>
+  </div>
+
+  <div style="margin-bottom: 2em;">&nbsp;</div>
+
+
+
+  <hr />
+  <!-- ======================================================== -->
+
+  <h2 id="def_anim">The First Animation</h2>
+
+  <div>
+  <p>
+    This second script is quite close to the first one, with some additions.
+    </p><p>
+    Other Glut callback are used, a basic animation is made, a delete function
+    was added to leave in a clean way, another data model based on indices,
+    managing matrices including the projection matrix, a buffer containing
+    several kind of data (vertices and colors), using interpolation in the shaders,
+    using the depth buffer, checking if the shaders was compiled right,
+    using cull-face and using a timer to calculate FPS.
+  </p>
+  </div>
+
+
+<!-- {{{ VBO example 2 -->
+<pre>
+<span class="Stat">open</span> <span class="PrPr">GL</span>          <span class="Comm">(* the base functions of OpenGL *)</span>
+<span class="Stat">open</span> <span class="PrPr">VertArray</span>   <span class="Comm">(* Vertex-Array, needed by VBO, VBO are build on top of VA's *)</span>
+<span class="Stat">open</span> <span class="PrPr">VBO</span>         <span class="Comm">(* Vertex Buffer Object, the most efficient drawing method</span>
+<span class="Comm">                      and the base drawing method in OpenGL 3.X *)</span>
+<span class="Stat">open</span> <span class="PrPr">Glut</span>        <span class="Comm">(* windowing with Glut *)</span>
+
+
+<span class="Stat">let</span> msecs <span class="Stat">=</span> <span class="Cnst">5000</span>  <span class="Comm">(* print fps every 5 seconds *)</span>
+
+<span class="Comm">(* product of the modelview (world) matrix and the projection matrix *)</span>
+<span class="Stat">let</span> modelviewProjectionMatrix <span class="Stat">=</span> ref <span class="Stat">[|</span> <span class="Stat">|]</span>
+
+
+<span class="Stat">let</span> cube_vertices <span class="Stat">=</span>
+  <span class="PrPr">Bigarray</span>.<span class="PrPr">Array1</span>.of_array <span class="PrPr">Bigarray</span>.float32 <span class="PrPr">Bigarray</span>.c_layout <span class="Stat">[|</span>
+    <span class="Comm">(* RGB colors *)</span>  <span class="Comm">(* XYZ coords *)</span>
+    <span class="Cnst">0.0</span><span class="Stat">;</span> <span class="Cnst">1.0</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span>    -<span class="Cnst">1.0</span><span class="Stat">;</span>  <span class="Cnst">1.0</span><span class="Stat">;</span> -<span class="Cnst">1.0</span><span class="Stat">;</span>
+    <span class="Cnst">0.0</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span>    -<span class="Cnst">1.0</span><span class="Stat">;</span> -<span class="Cnst">1.0</span><span class="Stat">;</span> -<span class="Cnst">1.0</span><span class="Stat">;</span>
+    <span class="Cnst">1.0</span><span class="Stat">;</span> <span class="Cnst">1.0</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span>    -<span class="Cnst">1.0</span><span class="Stat">;</span>  <span class="Cnst">1.0</span><span class="Stat">;</span>  <span class="Cnst">1.0</span><span class="Stat">;</span>
+    <span class="Cnst">1.0</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span>    -<span class="Cnst">1.0</span><span class="Stat">;</span> -<span class="Cnst">1.0</span><span class="Stat">;</span>  <span class="Cnst">1.0</span><span class="Stat">;</span>
+    <span class="Cnst">1.0</span><span class="Stat">;</span> <span class="Cnst">1.0</span><span class="Stat">;</span> <span class="Cnst">1.0</span><span class="Stat">;</span>     <span class="Cnst">1.0</span><span class="Stat">;</span>  <span class="Cnst">1.0</span><span class="Stat">;</span>  <span class="Cnst">1.0</span><span class="Stat">;</span>
+    <span class="Cnst">1.0</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span> <span class="Cnst">1.0</span><span class="Stat">;</span>     <span class="Cnst">1.0</span><span class="Stat">;</span> -<span class="Cnst">1.0</span><span class="Stat">;</span>  <span class="Cnst">1.0</span><span class="Stat">;</span>
+    <span class="Cnst">0.0</span><span class="Stat">;</span> <span class="Cnst">1.0</span><span class="Stat">;</span> <span class="Cnst">1.0</span><span class="Stat">;</span>     <span class="Cnst">1.0</span><span class="Stat">;</span>  <span class="Cnst">1.0</span><span class="Stat">;</span> -<span class="Cnst">1.0</span><span class="Stat">;</span>
+    <span class="Cnst">0.0</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span> <span class="Cnst">1.0</span><span class="Stat">;</span>     <span class="Cnst">1.0</span><span class="Stat">;</span> -<span class="Cnst">1.0</span><span class="Stat">;</span> -<span class="Cnst">1.0</span><span class="Stat">;</span>
+  <span class="Stat">|]</span>
+
+<span class="Stat">let</span> cube_indices <span class="Stat">=</span>
+  <span class="PrPr">Bigarray</span>.<span class="PrPr">Array1</span>.of_array <span class="PrPr">Bigarray</span>.<span class="Type">int32</span> <span class="PrPr">Bigarray</span>.c_layout <span class="Stat">(</span>
+    <span class="PrPr">Array</span>.map <span class="PrPr">Int32</span>.of_int <span class="Stat">[|</span>
+      <span class="Comm">(* 6 squares, each square made of 2 triangles,</span>
+<span class="Comm">         quad faces don't exist anymore in OGL 3.X *)</span>
+      <span class="Cnst">0</span><span class="Stat">;</span><span class="Cnst">1</span><span class="Stat">;</span><span class="Cnst">3</span><span class="Stat">;</span>  <span class="Cnst">3</span><span class="Stat">;</span><span class="Cnst">2</span><span class="Stat">;</span><span class="Cnst">0</span><span class="Stat">;</span>
+      <span class="Cnst">4</span><span class="Stat">;</span><span class="Cnst">5</span><span class="Stat">;</span><span class="Cnst">7</span><span class="Stat">;</span>  <span class="Cnst">7</span><span class="Stat">;</span><span class="Cnst">6</span><span class="Stat">;</span><span class="Cnst">4</span><span class="Stat">;</span>
+      <span class="Cnst">3</span><span class="Stat">;</span><span class="Cnst">1</span><span class="Stat">;</span><span class="Cnst">7</span><span class="Stat">;</span>  <span class="Cnst">7</span><span class="Stat">;</span><span class="Cnst">5</span><span class="Stat">;</span><span class="Cnst">3</span><span class="Stat">;</span>
+      <span class="Cnst">0</span><span class="Stat">;</span><span class="Cnst">2</span><span class="Stat">;</span><span class="Cnst">4</span><span class="Stat">;</span>  <span class="Cnst">4</span><span class="Stat">;</span><span class="Cnst">6</span><span class="Stat">;</span><span class="Cnst">0</span><span class="Stat">;</span>
+      <span class="Cnst">6</span><span class="Stat">;</span><span class="Cnst">7</span><span class="Stat">;</span><span class="Cnst">1</span><span class="Stat">;</span>  <span class="Cnst">1</span><span class="Stat">;</span><span class="Cnst">0</span><span class="Stat">;</span><span class="Cnst">6</span><span class="Stat">;</span>
+      <span class="Cnst">2</span><span class="Stat">;</span><span class="Cnst">3</span><span class="Stat">;</span><span class="Cnst">5</span><span class="Stat">;</span>  <span class="Cnst">5</span><span class="Stat">;</span><span class="Cnst">4</span><span class="Stat">;</span><span class="Cnst">2</span><span class="Stat">;</span>
+    <span class="Stat">|]</span>
+  <span class="Stat">)</span>
+
+
+<span class="Comm">(* construct a projection matrix *)</span>
+<span class="Stat">let</span> perspective_projection <span class="Stat">~</span><span class="Idnt">fov</span> <span class="Stat">~</span><span class="Idnt">ratio</span> <span class="Stat">~</span><span class="Idnt">near</span> <span class="Stat">~</span><span class="Idnt">far</span> <span class="Stat">=</span>
+
+  <span class="Stat">let</span> pi <span class="Stat">=</span> <span class="Cnst">3.14159265358979323846</span> <span class="Stat">in</span>
+  <span class="Stat">let</span> maxY <span class="Stat">=</span> near <span class="Stat">*</span>. tan <span class="Stat">(</span>fov <span class="Stat">*</span>. pi /. <span class="Cnst">360.0</span><span class="Stat">)</span> <span class="Stat">in</span>
+  <span class="Stat">let</span> minY <span class="Stat">=</span> -. maxY <span class="Stat">in</span>
+  <span class="Stat">let</span> minX <span class="Stat">=</span> minY <span class="Stat">*</span>. ratio
+  <span class="Stat">and</span> maxX <span class="Stat">=</span> maxY <span class="Stat">*</span>. ratio <span class="Stat">in</span>
+
+  <span class="Stat">let</span> x_diff <span class="Stat">=</span> maxX -. minX <span class="Stat">in</span>
+  <span class="Stat">let</span> y_diff <span class="Stat">=</span> maxY -. minY <span class="Stat">in</span>
+  <span class="Stat">let</span> z_diff <span class="Stat">=</span> far -. near <span class="Stat">in</span>
+  <span class="Stat">let</span> near_twice <span class="Stat">=</span> <span class="Cnst">2.0</span> <span class="Stat">*</span>. near <span class="Stat">in</span>
+
+  <span class="Stat">let</span> a <span class="Stat">=</span> near_twice /. x_diff
+  <span class="Stat">and</span> b <span class="Stat">=</span> near_twice /. y_diff
+  <span class="Stat">and</span> c <span class="Stat">=</span> <span class="Stat">(</span>maxX +. minX<span class="Stat">)</span> /. x_diff
+  <span class="Stat">and</span> d <span class="Stat">=</span> <span class="Stat">(</span>maxY +. minY<span class="Stat">)</span> /. y_diff
+  <span class="Stat">and</span> e <span class="Stat">=</span> -. <span class="Stat">(</span>far +. near<span class="Stat">)</span> /. z_diff
+  <span class="Stat">and</span> f <span class="Stat">=</span> -. <span class="Stat">(</span>near_twice <span class="Stat">*</span>. far<span class="Stat">)</span> /. z_diff
+  <span class="Stat">in</span>
+  <span class="Stat">[|</span> a<span class="Stat">;</span>   <span class="Cnst">0.0</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span>
+     <span class="Cnst">0.0</span><span class="Stat">;</span> b<span class="Stat">;</span>   <span class="Cnst">0.0</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span>
+     c<span class="Stat">;</span>   d<span class="Stat">;</span>   e<span class="Stat">;</span>  -<span class="Cnst">1.0</span><span class="Stat">;</span>
+     <span class="Cnst">0.0</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span> f<span class="Stat">;</span>   <span class="Cnst">0.0</span><span class="Stat">;</span> <span class="Stat">|]</span>
+
+
+<span class="Stat">let</span> translation_matrix <span class="Stat">(</span>x,y,z<span class="Stat">)</span> <span class="Stat">=</span>
+  <span class="Stat">[|</span> <span class="Cnst">1.0</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span>
+     <span class="Cnst">0.0</span><span class="Stat">;</span> <span class="Cnst">1.0</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span>
+     <span class="Cnst">0.0</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span> <span class="Cnst">1.0</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span>
+       x<span class="Stat">;</span>   y<span class="Stat">;</span>   z<span class="Stat">;</span> <span class="Cnst">1.0</span><span class="Stat">;</span> <span class="Stat">|]</span>
+
+
+<span class="Comm">(* multiply two matrices *)</span>
+<span class="Stat">let</span> mult_matrix <span class="Stat">~</span><span class="Idnt">m1</span> <span class="Stat">~</span><span class="Idnt">m2</span> <span class="Stat">=</span>
+  <span class="Stat">if</span> <span class="PrPr">Array</span>.length m1 <span class="Stat">&lt;&gt;</span> <span class="Cnst">16</span>
+  <span class="Stat">||</span> <span class="PrPr">Array</span>.length m2 <span class="Stat">&lt;&gt;</span> <span class="Cnst">16</span>
+  <span class="Stat">then</span> invalid_arg <span class="Cnst">&quot;mult_matrix&quot;</span><span class="Stat">;</span>
+
+  <span class="Stat">let</span> mat1_get <span class="Stat">=</span> <span class="PrPr">Array</span>.unsafe_get m1
+  <span class="Stat">and</span> mat2_get <span class="Stat">=</span> <span class="PrPr">Array</span>.unsafe_get m2 <span class="Stat">in</span>
+
+  <span class="Stat">let</span> m1_0  <span class="Stat">=</span> mat1_get <span class="Cnst">0</span>     <span class="Stat">and</span> m2_0  <span class="Stat">=</span> mat2_get <span class="Cnst">0</span>
+  <span class="Stat">and</span> m1_1  <span class="Stat">=</span> mat1_get <span class="Cnst">1</span>     <span class="Stat">and</span> m2_1  <span class="Stat">=</span> mat2_get <span class="Cnst">1</span>
+  <span class="Stat">and</span> m1_2  <span class="Stat">=</span> mat1_get <span class="Cnst">2</span>     <span class="Stat">and</span> m2_2  <span class="Stat">=</span> mat2_get <span class="Cnst">2</span>
+  <span class="Stat">and</span> m1_3  <span class="Stat">=</span> mat1_get <span class="Cnst">3</span>     <span class="Stat">and</span> m2_3  <span class="Stat">=</span> mat2_get <span class="Cnst">3</span>
+  <span class="Stat">and</span> m1_4  <span class="Stat">=</span> mat1_get <span class="Cnst">4</span>     <span class="Stat">and</span> m2_4  <span class="Stat">=</span> mat2_get <span class="Cnst">4</span>
+  <span class="Stat">and</span> m1_5  <span class="Stat">=</span> mat1_get <span class="Cnst">5</span>     <span class="Stat">and</span> m2_5  <span class="Stat">=</span> mat2_get <span class="Cnst">5</span>
+  <span class="Stat">and</span> m1_6  <span class="Stat">=</span> mat1_get <span class="Cnst">6</span>     <span class="Stat">and</span> m2_6  <span class="Stat">=</span> mat2_get <span class="Cnst">6</span>
+  <span class="Stat">and</span> m1_7  <span class="Stat">=</span> mat1_get <span class="Cnst">7</span>     <span class="Stat">and</span> m2_7  <span class="Stat">=</span> mat2_get <span class="Cnst">7</span>
+  <span class="Stat">and</span> m1_8  <span class="Stat">=</span> mat1_get <span class="Cnst">8</span>     <span class="Stat">and</span> m2_8  <span class="Stat">=</span> mat2_get <span class="Cnst">8</span>
+  <span class="Stat">and</span> m1_9  <span class="Stat">=</span> mat1_get <span class="Cnst">9</span>     <span class="Stat">and</span> m2_9  <span class="Stat">=</span> mat2_get <span class="Cnst">9</span>
+  <span class="Stat">and</span> m1_10 <span class="Stat">=</span> mat1_get <span class="Cnst">10</span>    <span class="Stat">and</span> m2_10 <span class="Stat">=</span> mat2_get <span class="Cnst">10</span>
+  <span class="Stat">and</span> m1_11 <span class="Stat">=</span> mat1_get <span class="Cnst">11</span>    <span class="Stat">and</span> m2_11 <span class="Stat">=</span> mat2_get <span class="Cnst">11</span>
+  <span class="Stat">and</span> m1_12 <span class="Stat">=</span> mat1_get <span class="Cnst">12</span>    <span class="Stat">and</span> m2_12 <span class="Stat">=</span> mat2_get <span class="Cnst">12</span>
+  <span class="Stat">and</span> m1_13 <span class="Stat">=</span> mat1_get <span class="Cnst">13</span>    <span class="Stat">and</span> m2_13 <span class="Stat">=</span> mat2_get <span class="Cnst">13</span>
+  <span class="Stat">and</span> m1_14 <span class="Stat">=</span> mat1_get <span class="Cnst">14</span>    <span class="Stat">and</span> m2_14 <span class="Stat">=</span> mat2_get <span class="Cnst">14</span>
+  <span class="Stat">and</span> m1_15 <span class="Stat">=</span> mat1_get <span class="Cnst">15</span>    <span class="Stat">and</span> m2_15 <span class="Stat">=</span> mat2_get <span class="Cnst">15</span>
+  <span class="Stat">in</span>
+  <span class="Stat">[|</span>
+    m1_0 <span class="Stat">*</span>. m2_0  +. m1_4 <span class="Stat">*</span>. m2_1  +. m1_8  <span class="Stat">*</span>. m2_2  +. m1_12 <span class="Stat">*</span>. m2_3<span class="Stat">;</span>
+    m1_1 <span class="Stat">*</span>. m2_0  +. m1_5 <span class="Stat">*</span>. m2_1  +. m1_9  <span class="Stat">*</span>. m2_2  +. m1_13 <span class="Stat">*</span>. m2_3<span class="Stat">;</span>
+    m1_2 <span class="Stat">*</span>. m2_0  +. m1_6 <span class="Stat">*</span>. m2_1  +. m1_10 <span class="Stat">*</span>. m2_2  +. m1_14 <span class="Stat">*</span>. m2_3<span class="Stat">;</span>
+    m1_3 <span class="Stat">*</span>. m2_0  +. m1_7 <span class="Stat">*</span>. m2_1  +. m1_11 <span class="Stat">*</span>. m2_2  +. m1_15 <span class="Stat">*</span>. m2_3<span class="Stat">;</span>
+    m1_0 <span class="Stat">*</span>. m2_4  +. m1_4 <span class="Stat">*</span>. m2_5  +. m1_8  <span class="Stat">*</span>. m2_6  +. m1_12 <span class="Stat">*</span>. m2_7<span class="Stat">;</span>
+    m1_1 <span class="Stat">*</span>. m2_4  +. m1_5 <span class="Stat">*</span>. m2_5  +. m1_9  <span class="Stat">*</span>. m2_6  +. m1_13 <span class="Stat">*</span>. m2_7<span class="Stat">;</span>
+    m1_2 <span class="Stat">*</span>. m2_4  +. m1_6 <span class="Stat">*</span>. m2_5  +. m1_10 <span class="Stat">*</span>. m2_6  +. m1_14 <span class="Stat">*</span>. m2_7<span class="Stat">;</span>
+    m1_3 <span class="Stat">*</span>. m2_4  +. m1_7 <span class="Stat">*</span>. m2_5  +. m1_11 <span class="Stat">*</span>. m2_6  +. m1_15 <span class="Stat">*</span>. m2_7<span class="Stat">;</span>
+    m1_0 <span class="Stat">*</span>. m2_8  +. m1_4 <span class="Stat">*</span>. m2_9  +. m1_8  <span class="Stat">*</span>. m2_10 +. m1_12 <span class="Stat">*</span>. m2_11<span class="Stat">;</span>
+    m1_1 <span class="Stat">*</span>. m2_8  +. m1_5 <span class="Stat">*</span>. m2_9  +. m1_9  <span class="Stat">*</span>. m2_10 +. m1_13 <span class="Stat">*</span>. m2_11<span class="Stat">;</span>
+    m1_2 <span class="Stat">*</span>. m2_8  +. m1_6 <span class="Stat">*</span>. m2_9  +. m1_10 <span class="Stat">*</span>. m2_10 +. m1_14 <span class="Stat">*</span>. m2_11<span class="Stat">;</span>
+    m1_3 <span class="Stat">*</span>. m2_8  +. m1_7 <span class="Stat">*</span>. m2_9  +. m1_11 <span class="Stat">*</span>. m2_10 +. m1_15 <span class="Stat">*</span>. m2_11<span class="Stat">;</span>
+    m1_0 <span class="Stat">*</span>. m2_12 +. m1_4 <span class="Stat">*</span>. m2_13 +. m1_8  <span class="Stat">*</span>. m2_14 +. m1_12 <span class="Stat">*</span>. m2_15<span class="Stat">;</span>
+    m1_1 <span class="Stat">*</span>. m2_12 +. m1_5 <span class="Stat">*</span>. m2_13 +. m1_9  <span class="Stat">*</span>. m2_14 +. m1_13 <span class="Stat">*</span>. m2_15<span class="Stat">;</span>
+    m1_2 <span class="Stat">*</span>. m2_12 +. m1_6 <span class="Stat">*</span>. m2_13 +. m1_10 <span class="Stat">*</span>. m2_14 +. m1_14 <span class="Stat">*</span>. m2_15<span class="Stat">;</span>
+    m1_3 <span class="Stat">*</span>. m2_12 +. m1_7 <span class="Stat">*</span>. m2_13 +. m1_11 <span class="Stat">*</span>. m2_14 +. m1_15 <span class="Stat">*</span>. m2_15<span class="Stat">;</span>
+  <span class="Stat">|]</span>
+
+
+<span class="Stat">let</span> reshape <span class="Stat">~</span><span class="Idnt">width</span> <span class="Stat">~</span><span class="Idnt">height</span> <span class="Stat">=</span>
+  <span class="Stat">let</span> height <span class="Stat">=</span> max height <span class="Cnst">1</span> <span class="Stat">in</span>
+  glViewport <span class="Cnst">0</span> <span class="Cnst">0</span> width height<span class="Stat">;</span>
+  <span class="Stat">let</span> ratio <span class="Stat">=</span> <span class="Type">float</span> width /. <span class="Type">float</span> height <span class="Stat">in</span>
+
+  <span class="Comm">(* creation of the matrices *)</span>
+  <span class="Stat">let</span> projectionMatrix <span class="Stat">=</span> perspective_projection <span class="Cnst">56.0</span> ratio <span class="Cnst">1.0</span> <span class="Cnst">500.0</span> <span class="Stat">in</span>
+  <span class="Stat">let</span> worldMatrix <span class="Stat">=</span> translation_matrix <span class="Stat">(</span><span class="Cnst">0.0</span>, <span class="Cnst">0.0</span>, -<span class="Cnst">6.0</span><span class="Stat">)</span> <span class="Stat">in</span>
+  modelviewProjectionMatrix <span class="Stat">:=</span> mult_matrix projectionMatrix worldMatrix<span class="Stat">;</span>
+<span class="Stat">;;</span>
+
+
+<span class="Stat">let</span> normalise_vector <span class="Stat">(</span>x,y,z<span class="Stat">)</span> <span class="Stat">=</span>
+  <span class="Stat">let</span> len <span class="Stat">=</span> sqrt<span class="Stat">(</span>x <span class="Stat">*</span>. x +. y <span class="Stat">*</span>. y +. z <span class="Stat">*</span>. z<span class="Stat">)</span> <span class="Stat">in</span>
+  <span class="Stat">(</span>x /. len, y /. len, z /. len<span class="Stat">)</span>
+
+<span class="Comm">(* create a rotation matrix defined by a rotation axis and a rotation angle *)</span>
+<span class="Stat">let</span> rotation_matrix_of_axis <span class="Stat">~</span><span class="Idnt">dir</span> <span class="Stat">~</span><span class="Idnt">angle</span> <span class="Stat">=</span>
+  <span class="Stat">let</span> angle <span class="Stat">=</span> angle <span class="Stat">*</span>. <span class="Cnst">0.5</span> <span class="Stat">in</span>
+  <span class="Stat">let</span> vn_x, vn_y, vn_z <span class="Stat">=</span> normalise_vector dir <span class="Stat">in</span>
+  <span class="Stat">let</span> sinAngle <span class="Stat">=</span> sin angle <span class="Stat">in</span>
+  <span class="Stat">let</span> qx <span class="Stat">=</span> vn_x <span class="Stat">*</span>. sinAngle
+  <span class="Stat">and</span> qy <span class="Stat">=</span> vn_y <span class="Stat">*</span>. sinAngle
+  <span class="Stat">and</span> qz <span class="Stat">=</span> vn_z <span class="Stat">*</span>. sinAngle
+  <span class="Stat">and</span> qw <span class="Stat">=</span> cos angle
+  <span class="Stat">in</span>
+  <span class="Stat">let</span> x2 <span class="Stat">=</span> qx <span class="Stat">*</span>. qx
+  <span class="Stat">and</span> y2 <span class="Stat">=</span> qy <span class="Stat">*</span>. qy
+  <span class="Stat">and</span> z2 <span class="Stat">=</span> qz <span class="Stat">*</span>. qz
+  <span class="Stat">and</span> xy <span class="Stat">=</span> qx <span class="Stat">*</span>. qy
+  <span class="Stat">and</span> xz <span class="Stat">=</span> qx <span class="Stat">*</span>. qz
+  <span class="Stat">and</span> yz <span class="Stat">=</span> qy <span class="Stat">*</span>. qz
+  <span class="Stat">and</span> wx <span class="Stat">=</span> qw <span class="Stat">*</span>. qx
+  <span class="Stat">and</span> wy <span class="Stat">=</span> qw <span class="Stat">*</span>. qy
+  <span class="Stat">and</span> wz <span class="Stat">=</span> qw <span class="Stat">*</span>. qz <span class="Stat">in</span>
+  <span class="Stat">[|</span> <span class="Cnst">1.0</span> -. <span class="Cnst">2.0</span> <span class="Stat">*</span>. <span class="Stat">(</span>y2 +. z2<span class="Stat">)</span> <span class="Stat">;</span> <span class="Cnst">2.0</span> <span class="Stat">*</span>. <span class="Stat">(</span>xy -. wz<span class="Stat">)</span><span class="Stat">;</span>  <span class="Cnst">2.0</span> <span class="Stat">*</span>. <span class="Stat">(</span>xz +. wy<span class="Stat">)</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span>
+     <span class="Cnst">2.0</span> <span class="Stat">*</span>. <span class="Stat">(</span>xy +. wz<span class="Stat">)</span><span class="Stat">;</span>  <span class="Cnst">1.0</span> -. <span class="Cnst">2.0</span> <span class="Stat">*</span>. <span class="Stat">(</span>x2 +. z2<span class="Stat">)</span><span class="Stat">;</span>  <span class="Cnst">2.0</span> <span class="Stat">*</span>. <span class="Stat">(</span>yz -. wx<span class="Stat">)</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span>
+     <span class="Cnst">2.0</span> <span class="Stat">*</span>. <span class="Stat">(</span>xz -. wy<span class="Stat">)</span><span class="Stat">;</span>  <span class="Cnst">2.0</span> <span class="Stat">*</span>. <span class="Stat">(</span>yz +. wx<span class="Stat">)</span><span class="Stat">;</span>  <span class="Cnst">1.0</span> -. <span class="Cnst">2.0</span> <span class="Stat">*</span>. <span class="Stat">(</span>x2 +. y2<span class="Stat">)</span><span class="Stat">;</span> <span class="Cnst">0.0</span><span class="Stat">;</span>
+     <span class="Cnst">0.0</span><span class="Stat">;</span>  <span class="Cnst">0.0</span><span class="Stat">;</span>  <span class="Cnst">0.0</span><span class="Stat">;</span>  <span class="Cnst">1.0</span><span class="Stat">;</span> <span class="Stat">|]</span>
+
+
+<span class="Stat">let</span> frame_count <span class="Stat">=</span> ref <span class="Cnst">0</span>
+
+<span class="Stat">let</span> display
+      <span class="Stat">(</span>mesh_buffers, ndx_len,
+       <span class="Stat">(</span>shader_prog,
+        uniformID,
+        vertexPositionAttrib,
+        vertexColorAttrib, <span class="Stat">_</span>, <span class="Stat">_</span><span class="Stat">))</span> <span class="Stat">=</span> <span class="Stat">function</span> <span class="Cnst">()</span> <span class="Stat">-&gt;</span>
+
+  glClear <span class="Stat">[</span><span class="Cnst">GL_COLOR_BUFFER_BIT</span><span class="Stat">;</span> <span class="Cnst">GL_DEPTH_BUFFER_BIT</span><span class="Stat">]</span><span class="Stat">;</span>
+
+  <span class="Stat">let</span> now <span class="Stat">=</span> <span class="PrPr">Unix</span>.gettimeofday<span class="Cnst">()</span> <span class="Stat">in</span>
+  <span class="Stat">let</span> y <span class="Stat">=</span> cos now
+  <span class="Stat">and</span> z <span class="Stat">=</span> sin now <span class="Stat">in</span>
+  <span class="Stat">let</span> dir <span class="Stat">=</span> <span class="Stat">(</span><span class="Cnst">0.0</span>, y, z<span class="Stat">)</span>        <span class="Comm">(* this is the axis of the rotation *)</span>
+  <span class="Stat">and</span> angle <span class="Stat">=</span> <span class="Stat">(</span>now <span class="Stat">*</span>. <span class="Cnst">0.8</span><span class="Stat">)</span> <span class="Stat">in</span>  <span class="Comm">(* and this is the angle of the rotation *)</span>
+
+  <span class="Stat">let</span> rot_mat <span class="Stat">=</span> rotation_matrix_of_axis dir angle <span class="Stat">in</span>
+  <span class="Stat">let</span> world_proj_matrix <span class="Stat">=</span> mult_matrix <span class="Stat">!</span>modelviewProjectionMatrix rot_mat <span class="Stat">in</span>
+
+  glUseProgram shader_prog<span class="Stat">;</span>
+  glUniformMatrix4fv uniformID <span class="Cnst">1</span> <span class="Cnst">false</span> world_proj_matrix<span class="Stat">;</span>
+
+  <span class="Comm">(* activate the 2 generic arrays *)</span>
+  glEnableVertexAttribArray vertexColorAttrib<span class="Stat">;</span>
+  glEnableVertexAttribArray vertexPositionAttrib<span class="Stat">;</span>
+
+  <span class="Comm">(* bind the vertices buffer *)</span>
+  glBindBuffer <span class="Cnst">GL_ARRAY_BUFFER</span> mesh_buffers.<span class="Stat">(</span><span class="Cnst">0</span><span class="Stat">)</span><span class="Stat">;</span>
+  <span class="Comm">(* and link the buffer data with the shader program *)</span>
+  glVertexAttribPointerOfs32 vertexColorAttrib <span class="Cnst">3</span> <span class="PrPr">VAttr</span>.<span class="Cnst">GL_FLOAT</span> <span class="Cnst">false</span> <span class="Cnst">6</span> <span class="Cnst">0</span><span class="Stat">;</span>
+  glVertexAttribPointerOfs32 vertexPositionAttrib <span class="Cnst">3</span> <span class="PrPr">VAttr</span>.<span class="Cnst">GL_FLOAT</span> <span class="Cnst">false</span> <span class="Cnst">6</span> <span class="Cnst">3</span><span class="Stat">;</span>
+
+  <span class="Comm">(* active the indices buffer *)</span>
+  glBindBuffer <span class="Cnst">GL_ELEMENT_ARRAY_BUFFER</span> mesh_buffers.<span class="Stat">(</span><span class="Cnst">1</span><span class="Stat">)</span><span class="Stat">;</span>
+  <span class="Comm">(* and render the mesh *)</span>
+  glDrawElements0 <span class="Cnst">GL_TRIANGLES</span> ndx_len <span class="PrPr">Elem</span>.<span class="Cnst">GL_UNSIGNED_INT</span><span class="Stat">;</span>
+
+  <span class="Comm">(* desactivate the generic arrays *)</span>
+  glDisableVertexAttribArray vertexColorAttrib<span class="Stat">;</span>
+  glDisableVertexAttribArray vertexPositionAttrib<span class="Stat">;</span>
+
+  glUnuseProgram <span class="Cnst">()</span><span class="Stat">;</span>
+
+  incr frame_count<span class="Stat">;</span>
+  glutSwapBuffers <span class="Cnst">()</span><span class="Stat">;</span>
+<span class="Stat">;;</span>
+
+
+
+<span class="Stat">let</span> vertex_shader <span class="Stat">=</span> <span class="Cnst">&quot;</span>
+<span class="Cnst">#version 130</span>
+<span class="Cnst">in vec3 VertexColor;</span>
+<span class="Cnst">in vec3 VertexPosition;</span>
+<span class="Cnst">uniform mat4 ModelViewProjectionMatrix;</span>
+<span class="Cnst">invariant gl_Position;</span>
+<span class="Cnst">smooth out vec3 InterpolatedColor;</span>
+
+<span class="Cnst">void main () {</span>
+<span class="Cnst">    InterpolatedColor = VertexColor;</span>
+<span class="Cnst">    gl_Position = ModelViewProjectionMatrix * vec4 (VertexPosition, 1.0);</span>
+<span class="Cnst">}&quot;</span>
+
+<span class="Stat">let</span> fragment_shader <span class="Stat">=</span> <span class="Cnst">&quot;</span>
+<span class="Cnst">#version 130</span>
+<span class="Cnst">precision highp float;</span>
+<span class="Cnst">smooth in vec3 InterpolatedColor;</span>
+<span class="Cnst">out vec4 Color;</span>
+<span class="Cnst">void main() {</span>
+<span class="Cnst">    Color = vec4 (InterpolatedColor, 1.0);</span>
+<span class="Cnst">}&quot;</span>
+
+
+<span class="Stat">let</span> load_shaders vertexShader fragmentShader <span class="Stat">=</span>
+  <span class="Stat">let</span> vertexShaderID <span class="Stat">=</span> glCreateShader <span class="Cnst">GL_VERTEX_SHADER</span> <span class="Stat">in</span>
+  <span class="Stat">let</span> fragmentShaderID <span class="Stat">=</span> glCreateShader <span class="Cnst">GL_FRAGMENT_SHADER</span> <span class="Stat">in</span>
+
+  glShaderSource vertexShaderID vertexShader<span class="Stat">;</span>
+  glShaderSource fragmentShaderID fragmentShader<span class="Stat">;</span>
+
+  glCompileShader vertexShaderID<span class="Stat">;</span>
+  glCompileShader fragmentShaderID<span class="Stat">;</span>
+
+  <span class="Stat">if</span> <span class="Stat">not</span><span class="Stat">(</span>glGetShaderCompileStatus vertexShaderID<span class="Stat">)</span> <span class="Stat">then</span> <span class="Stat">begin</span>
+    prerr_endline <span class="Cnst">&quot;vertex shader compile error&quot;</span><span class="Stat">;</span>
+    prerr_endline <span class="Stat">(</span>glGetShaderInfoLog vertexShaderID<span class="Stat">)</span><span class="Stat">;</span>
+    glGetShaderCompileStatus_exn vertexShaderID<span class="Stat">;</span>
+  <span class="Stat">end</span><span class="Stat">;</span>
+  <span class="Stat">if</span> <span class="Stat">not</span><span class="Stat">(</span>glGetShaderCompileStatus fragmentShaderID<span class="Stat">)</span> <span class="Stat">then</span> <span class="Stat">begin</span>
+    prerr_endline <span class="Cnst">&quot;fragment shader compile error&quot;</span><span class="Stat">;</span>
+    prerr_endline <span class="Stat">(</span>glGetShaderInfoLog fragmentShaderID<span class="Stat">)</span><span class="Stat">;</span>
+    glGetShaderCompileStatus_exn fragmentShaderID<span class="Stat">;</span>
+  <span class="Stat">end</span><span class="Stat">;</span>
+
+  <span class="Stat">let</span> shaderProgram <span class="Stat">=</span> glCreateProgram <span class="Cnst">()</span> <span class="Stat">in</span>
+  glAttachShader shaderProgram vertexShaderID<span class="Stat">;</span>
+  glAttachShader shaderProgram fragmentShaderID<span class="Stat">;</span>
+
+  glLinkProgram shaderProgram<span class="Stat">;</span>
+
+  <span class="Stat">let</span> uniformMatrix <span class="Stat">=</span> glGetUniformLocation shaderProgram <span class="Cnst">&quot;ModelViewProjectionMatrix&quot;</span>
+  <span class="Stat">and</span> vertexPositionAttrib <span class="Stat">=</span> glGetAttribLocation shaderProgram <span class="Cnst">&quot;VertexPosition&quot;</span>
+  <span class="Stat">and</span> vertexColorAttrib <span class="Stat">=</span> glGetAttribLocation shaderProgram <span class="Cnst">&quot;VertexColor&quot;</span> <span class="Stat">in</span>
+
+  <span class="Stat">(</span> shaderProgram,
+    uniformMatrix,
+    vertexPositionAttrib,
+    vertexColorAttrib,
+    vertexShaderID,
+    fragmentShaderID <span class="Stat">)</span>
+
+
+
+<span class="Stat">let</span> make_mesh <span class="Stat">~</span><span class="Idnt">indices</span>:ba_indices <span class="Stat">~</span><span class="Idnt">vertices</span>:ba_vertices <span class="Stat">=</span>
+  <span class="Stat">let</span> ndx_len <span class="Stat">=</span> <span class="PrPr">Bigarray</span>.<span class="PrPr">Array1</span>.dim ba_indices <span class="Stat">in</span>
+  <span class="Stat">let</span> shading <span class="Stat">=</span> load_shaders vertex_shader fragment_shader <span class="Stat">in</span>
+  <span class="Stat">let</span> mesh_buffers <span class="Stat">=</span> glGenBuffers <span class="Cnst">2</span> <span class="Stat">in</span>
+  glBindBuffer <span class="Cnst">GL_ARRAY_BUFFER</span> mesh_buffers.<span class="Stat">(</span><span class="Cnst">0</span><span class="Stat">)</span><span class="Stat">;</span>
+  glBufferData <span class="Cnst">GL_ARRAY_BUFFER</span> <span class="Stat">(</span>ba_sizeof ba_vertices<span class="Stat">)</span> ba_vertices <span class="Cnst">GL_STATIC_DRAW</span><span class="Stat">;</span>
+  glBindBuffer <span class="Cnst">GL_ELEMENT_ARRAY_BUFFER</span> mesh_buffers.<span class="Stat">(</span><span class="Cnst">1</span><span class="Stat">)</span><span class="Stat">;</span>
+  glBufferData <span class="Cnst">GL_ELEMENT_ARRAY_BUFFER</span> <span class="Stat">(</span>ba_sizeof ba_indices<span class="Stat">)</span> ba_indices <span class="Cnst">GL_STATIC_DRAW</span><span class="Stat">;</span>
+  <span class="Stat">(</span>mesh_buffers, ndx_len, shading<span class="Stat">)</span>
+
+
+<span class="Stat">let</span> delete_mesh
+      <span class="Stat">(</span>mesh_buffers, <span class="Stat">_</span>,
+       <span class="Stat">(</span>shaderProgram,
+        <span class="Stat">_</span>, <span class="Stat">_</span>, <span class="Stat">_</span>,
+        vertexShaderID,
+        fragmentShaderID<span class="Stat">))</span> <span class="Stat">=</span>
+
+  glDeleteShader vertexShaderID<span class="Stat">;</span>
+  glDeleteShader fragmentShaderID<span class="Stat">;</span>
+  glDeleteProgram shaderProgram<span class="Stat">;</span>
+  glDeleteBuffers mesh_buffers<span class="Stat">;</span>
+<span class="Stat">;;</span>
+
+
+<span class="Stat">let</span> keyboard mesh_with_shaders <span class="Stat">~</span><span class="Idnt">key</span> <span class="Stat">~</span><span class="Idnt">x</span> <span class="Stat">~</span><span class="Idnt">y</span> <span class="Stat">=</span>
+  <span class="Stat">if</span> key <span class="Stat">=</span> <span class="Cnst">'\027'</span> <span class="Stat">then</span> <span class="Stat">(</span>delete_mesh mesh_with_shaders<span class="Stat">;</span> exit <span class="Cnst">0</span><span class="Stat">)</span><span class="Stat">;</span>
+<span class="Stat">;;</span>
+
+
+<span class="Stat">let</span> last_time <span class="Stat">=</span> ref<span class="Stat">(</span><span class="PrPr">Unix</span>.gettimeofday<span class="Cnst">()</span><span class="Stat">)</span>
+
+<span class="Stat">let</span> <span class="Stat">rec</span> timer <span class="Stat">~</span><span class="Idnt">value</span>:msecs <span class="Stat">=</span>
+  glutTimerFunc <span class="Stat">~</span><span class="Idnt">msecs</span> <span class="Stat">~</span><span class="Idnt">timer</span> <span class="Stat">~</span><span class="Idnt">value</span>:msecs<span class="Stat">;</span>
+  <span class="Stat">let</span> now <span class="Stat">=</span> <span class="PrPr">Unix</span>.gettimeofday<span class="Cnst">()</span> <span class="Stat">in</span>
+  <span class="Stat">let</span> diff <span class="Stat">=</span> <span class="Stat">(</span>now -. <span class="Stat">!</span>last_time<span class="Stat">)</span> <span class="Stat">in</span>
+  <span class="PrPr">Printf</span>.printf <span class="Cnst">&quot; %d frames in %f seconds \t fps: %g\n%!&quot;</span>
+                <span class="Stat">!</span>frame_count diff <span class="Stat">(</span><span class="Type">float</span> <span class="Stat">!</span>frame_count /. diff<span class="Stat">)</span><span class="Stat">;</span>
+  frame_count <span class="Stat">:=</span> <span class="Cnst">0</span><span class="Stat">;</span>
+  last_time <span class="Stat">:=</span> now<span class="Stat">;</span>
+<span class="Stat">;;</span>
+
+
+<span class="Stat">let</span> init_opengl <span class="Stat">~</span><span class="Idnt">width</span> <span class="Stat">~</span><span class="Idnt">height</span> <span class="Stat">=</span>
+  reshape <span class="Stat">~</span><span class="Idnt">width</span> <span class="Stat">~</span><span class="Idnt">height</span><span class="Stat">;</span>
+
+  glEnable <span class="Cnst">GL_DEPTH_TEST</span><span class="Stat">;</span>
+  glFrontFace <span class="Cnst">GL_CCW</span><span class="Stat">;</span>     <span class="Comm">(* assume a clean model *)</span>
+  glEnable <span class="Cnst">GL_CULL_FACE</span><span class="Stat">;</span>  <span class="Comm">(* activate elimination of polygons *)</span>
+  glCullFace <span class="Cnst">GL_BACK</span><span class="Stat">;</span>     <span class="Comm">(* remove back side of polygons *)</span>
+<span class="Stat">;;</span>
+
+
+<span class="Comm">(* main *)</span>
+<span class="Stat">let</span> <span class="Cnst">()</span> <span class="Stat">=</span>
+  <span class="Stat">let</span> width <span class="Stat">=</span> <span class="Cnst">800</span> <span class="Stat">and</span> height <span class="Stat">=</span> <span class="Cnst">600</span> <span class="Stat">in</span>
+  ignore<span class="Stat">(</span>glutInit <span class="PrPr">Sys</span>.argv<span class="Stat">)</span><span class="Stat">;</span>
+  glutInitDisplayMode <span class="Stat">[</span><span class="Cnst">GLUT_RGB</span><span class="Stat">;</span> <span class="Cnst">GLUT_DOUBLE</span><span class="Stat">;</span> <span class="Cnst">GLUT_DEPTH</span><span class="Stat">]</span><span class="Stat">;</span>
+  glutInitWindowPosition <span class="Stat">~</span><span class="Idnt">x</span>:<span class="Cnst">100</span> <span class="Stat">~</span><span class="Idnt">y</span>:<span class="Cnst">100</span><span class="Stat">;</span>
+  glutInitWindowSize <span class="Stat">~</span><span class="Idnt">width</span> <span class="Stat">~</span><span class="Idnt">height</span><span class="Stat">;</span>
+  ignore<span class="Stat">(</span>glutCreateWindow <span class="Stat">~</span><span class="Idnt">title</span>:<span class="Cnst">&quot;VBO with OpenGL 3.X&quot;</span><span class="Stat">)</span><span class="Stat">;</span>
+
+  init_opengl <span class="Stat">~</span><span class="Idnt">width</span> <span class="Stat">~</span><span class="Idnt">height</span><span class="Stat">;</span>
+
+  <span class="Comm">(* make a mesh ready to be drawn *)</span>
+  <span class="Stat">let</span> mesh_with_shaders <span class="Stat">=</span> make_mesh cube_indices cube_vertices <span class="Stat">in</span>
+
+  glutDisplayFunc <span class="Stat">~</span><span class="Idnt">display</span>:<span class="Stat">(</span>display mesh_with_shaders<span class="Stat">)</span><span class="Stat">;</span>
+  glutKeyboardFunc <span class="Stat">~</span><span class="Idnt">keyboard</span>:<span class="Stat">(</span>keyboard mesh_with_shaders<span class="Stat">)</span><span class="Stat">;</span>
+  glutIdleFunc <span class="Stat">~</span><span class="Idnt">idle</span>:glutPostRedisplay<span class="Stat">;</span>
+  glutTimerFunc <span class="Stat">~</span><span class="Idnt">msecs</span> <span class="Stat">~</span><span class="Idnt">timer</span> <span class="Stat">~</span><span class="Idnt">value</span>:msecs<span class="Stat">;</span>
+  glutReshapeFunc <span class="Stat">~</span><span class="Idnt">reshape</span><span class="Stat">;</span>
+
+  glutMainLoop <span class="Cnst">()</span><span class="Stat">;</span>
+<span class="Stat">;;</span>
+</pre>
+
+
+  <div>
+  <p>
+    And the equivalent shaders for GLSL version 1.2:
+  </p>
+  </div>
+
+<pre>
+<span class="Stat">let</span> vertex_shader <span class="Stat">=</span> <span class="Cnst">&quot;</span>
+<span class="Cnst">#version 120</span>
+<span class="Cnst">in vec3 VertexColor;</span>
+<span class="Cnst">in vec3 VertexPosition;</span>
+<span class="Cnst">uniform mat4 ModelViewProjectionMatrix;</span>
+<span class="Cnst">varying out vec3 InterpolatedColor;</span>
+<span class="Cnst">void main () {</span>
+<span class="Cnst">    InterpolatedColor = VertexColor;</span>
+<span class="Cnst">    gl_Position = ModelViewProjectionMatrix * vec4 (VertexPosition, 1.0);</span>
+<span class="Cnst">}&quot;</span>
+
+<span class="Stat">let</span> fragment_shader <span class="Stat">=</span> <span class="Cnst">&quot;</span>
+<span class="Cnst">#version 120</span>
+<span class="Cnst">precision highp float;</span>
+<span class="Cnst">in vec3 InterpolatedColor;</span>
+<span class="Cnst">void main() {</span>
+<span class="Cnst">    gl_FragColor = vec4 (InterpolatedColor, 1.0);</span>
+<span class="Cnst">}&quot;</span>
+</pre>
+
+<!-- }}} -->
+
+  <div style="margin-left:14%;">
+    This program displays a rotating colored cube:
+  </div>
+
+<div style="margin:10px 15%"><img src="./simple-vbo.2.png" /></div>
+
+
+  <div>
+  <p>
+    Here are explanations of this program:
+  </p>
+  </div>
+
+  <h3 id="def_matrices">Managing Matrices</h3>
+  <div class="nt">
+  <p>
+    In the old OpenGL model the projection and the modelview matrices was handled
+    internally by the OpenGL implementations. These internal matrices and all the
+    associated functions and gl-enums are now deprecated. Now the OpenGL programmers
+    should manage matrices themselves. So you can either write your own module
+    to do so, or find a module ready to use.
+    <br />
+    In the glMLite tarball there is a module called <span class="var">Ogl_matrix</span>
+    in the directory "TEST3" (or "Incubating") that you can use. I would recommend you
+    to copy the file of this module in your own project because even if it does work yet,
+    several things may change as for example the name of the functions.
+  </p>
+  </div>
+
+  <h3 id="def_proj">The projection Matrix</h3>
+  <div class="nt">
+  <p>
+    The projection matrix is used to transform the 3D coordinates of the vertices
+    in the 3D world into 2D coordinates of points in the window where the image
+    is rendered.<br />
+    There are mainly two kinds of projections:
+    <a href="http://en.wikipedia.org/wiki/Orthographic_projection">orthographic projection</a>
+    and
+    <a href="http://en.wikipedia.org/wiki/Perspective_projection#Perspective_projection"
+      >perspective projection</a>.
+  </p>
+  <p>
+    In the old OpenGL model the projection matrix was handled internally by
+    the OpenGL implementation and it was accessed and modified with
+    <code class="depr">glMatrixMode GL_PROJECTION;</code> and the functions
+    <code class="depr">gluPerspective</code> and <code class="depr">glOrtho</code>.
+    What those functions did was modifing the internal projection matrix.<br />
+    Now this internal projection matrix is deprecated and the OpenGL programmer
+    should use equivalent functions that instead of setting the internal
+    matrix will return this matrix. Then most often this matrix is provided
+    to the vertex shader that apply this matrix to the input vertex.
+  </p>
+  <p>
+    The module <span class="var">Ogl_matrix</span> available in glMLite's tarball
+    provides replacements for those old functions:
+    <span class="var">perspective_projection</span> replaces
+    <code class="depr">gluPerspective</code> and
+    <span class="var">ortho_projection</span> replaces
+    <code class="depr">glOrtho</code>.
+  </p>
+
+<pre>
+<span class="Stat">val</span> perspective_projection :
+  fov:<span class="Type">float</span> <span class="Stat">-&gt;</span> ratio:<span class="Type">float</span> <span class="Stat">-&gt;</span>
+  near:<span class="Type">float</span> <span class="Stat">-&gt;</span> far:<span class="Type">float</span> <span class="Stat">-&gt;</span> <span class="Type">float</span> <span class="Type">array</span>
+</pre>
+
+  <p>
+    The <span class="var">fov</span> argument is very simple, it is the "Field Of View",
+    in other words the angle of the viewable area. This angle is between the left and
+    the right planes of the view <a href="http://en.wikipedia.org/wiki/Frustum">frustum</a>,
+    so along the vertical Y axis.<br />
+    High values for <span class="var">fov</span> will increase the perspective feeling,
+    but too high values won't be realistic anymore.
+    Very small values of <span class="var">fov</span> will provide a result close to what
+    you would get using an ortho projection.<br />
+    Most of the time <span class="var">fov</span> is set to values between 30 and 90 degrees.
+  </p>
+  <p>
+    The <span class="var">near</span> and <span class="var">far</span> arguments are
+    quite important, they define the range along the Z axis (the axis of the look)
+    between which the objects will be visible. So it's a common error while beginning
+    with OpenGL to put wrong values and encounter problems with objects that are not
+    visible.<br />
+    But the trick is also not to put a too wide interval because this would reduce the
+    precision of the display of the depth in the image, in particular for objects that
+    are very close and intersecting.
+    You can get more explanations about this in the Wikipedia article about the
+    <a href="http://en.wikipedia.org/wiki/Z-buffering">depth buffer</a>.
+    <br />
+
+    The smaller is the range between <span class="var">near</span> and
+    <span class="var">far</span>, the more precise will be the rendering of the intersections,
+    <span style="color:#00E;">
+    So try to define these parameters to fit properly the dimensions of the elements that
+    are drawn in the 3D scene.</span>
+  </p>
+
+<pre>
+<span class="Stat">val</span> ortho_projection :
+  left:<span class="Type">float</span> <span class="Stat">-&gt;</span> right:<span class="Type">float</span> <span class="Stat">-&gt;</span>
+  bottom:<span class="Type">float</span> <span class="Stat">-&gt;</span> top:<span class="Type">float</span> <span class="Stat">-&gt;</span>
+  near:<span class="Type">float</span> <span class="Stat">-&gt;</span> far:<span class="Type">float</span> <span class="Stat">-&gt;</span> <span class="Type">float</span> <span class="Type">array</span>
+</pre>
+
+  <p>
+    <span class="var">ortho_projection</span> sets an 
+    orthographic projection
+    matrix. You can see an example of such a projection on
+    <a href="https://www.freedroid.org/images/screenshots/editor.png"
+      >this screenshot</a> where you can see that the walls are parallel
+    and are not affected by any perspective.
+  </p>
+  </div>
+
+
+
+  <h3 id="def_rotanim">Animated Rotation</h3>
+  <div class="nt">
+  <p>
+    A rotation is defined based on the
+    <a href="http://caml.inria.fr/pub/docs/manual-ocaml/libref/Unix.html#VALgettimeofday"
+      >Unix.gettimeofday()</a>
+    function.<br />
+    So to apply this rotation we need to calculate a 4x4 matrix that represents the rotation.
+    We do so with <span class="var">rotation_matrix_of_axis</span>.
+    We define an axis, this axis itself rotates while it's a unit vector defined with
+    a cosinus and a sinus (see <a href="http://en.wikipedia.org/wiki/Unit_circle">unit circle</a>).
+    And the angle of rotation is proportional to the value returned by
+    <span class="var">gettimeofday</span>.
+  </p>
+  </div>
+
+
+  <h3 id="def_callbacks">Glut Interaction Callbacks</h3>
+  <div>
+  <p>
+    The Glut library provides callbacks to handle interaction with the user.
+    There are callbacks for (non-exhaustive list) the keyboard, the mouse.
+  </p>
+  </div>
+
+  <div>
+  <p>
+    Here an Idle callback is defined. It is a function which is called when the computer
+    has temporarily nothing to do. This is often usefull while OpenGL programs are often
+    hard resource consumers. Here the Idle will call
+    <strong>glutPostRedisplay</strong>
+    <a href="http://www.opengl.org/resources/libraries/glut/spec3/node20.html"><img
+       src="./external.png" /></a>
+    which is a function that will request a new frame redraw at the end of the current
+    function. So this program will draw frames greedily, and by the way we can
+    check how many frames per seconds (fps) our program is able to draw.
+  </p>
+  </div>
+
+  <h3 id="def_timer">Timer</h3>
+  <div class="nt">
+  <p>
+    With Glut timers are defined with three parameters which are
+    <span class="var">msecs</span>, <span class="var">timer</span> and
+    <span class="var">value</span>. <span class="var">timer</span> is the
+    callback which will be called after
+    <span class="var">msecs</span> milliseconds elapsed. And it will
+    be called only once, so to make it called regularly it has to be
+    a recursive function that calls glutTimerFunc to make the recursive
+    loop.
+  </p>
+  <p>
+    Here in this timer we just calculate the FPS and print it every 5 seconds.
+  </p>
+  </div>
+
+
+  <h3 id="def_reshape">Reshape the Window</h3>
+  <div class="nt">
+  <p>
+    If the window is not in fullscreen, it may happen that the user reshape the
+    window. In this case the projection matrix have to be readapted to the new
+    dimensions of the window, and also to its eventualy new aspect ratio.
+    To fix all this we use a <strong>reshape callback</strong> where the
+    new projection parameters will be set.
+  </p>
+  </div>
+  <div>
+  <p>
+    The <em>reshape</em> callback will be called a first time during the initialisation,
+    so before the first frame rendering.<br />
+    Here the reshape function is called in the initialisation function
+    <span class="var">init_opengl</span>, while glut calls it before the first call
+    to the display callback so here it's not needed, but I have put it here
+    to recall you to call it at startup if you use another windowing lib than Glut.
+  </p>
+  </div>
+
+
+
+  <h3 id="def_delete">Clean and Delete</h3>
+  <div class="nt">
+  <p>
+    Long time living programs should delete shaders and vbo buffers that are not
+    used anymore. Here it is done in the function
+    <span class="var">delete_mesh</span>, but
+    you could take advantage of the garbage collector to do this automatically,
+    by using <code><span class="PrPr">Gc</span>.finalise</code>.
+    But remember that this function does only work with heap-allocated values,
+    so it won't work on vbo and shaders IDs alone while they are wrapped as ints,
+    but this will work when they are grouped together in a tuple.
+  </p>
+  </div>
+
+  <h3 id="def_indexeddata">Indexed Face Set</h3>
+  <div class="nt">
+  <p>
+    In our cube (as in most meshes) each vertex belongs to several faces.
+    As each square is made of two trangles, each vertex may belong
+    to between 3 to 6 faces. In our cube each vertex belongs to an average
+    of 4.5 faces.<br />
+    So to save space, most often we use a different data model than in the
+    first example which is made of two arrays. The first array contains
+    each vertex only once. And the second array represents the faces
+    using the indices of the vertices from the first array.<br />
+    Here each int from <span class="var">cube_indices</span> is the index of
+    a vertex, and each vertex is represented by a full line in
+    <span class="var">cube_vertices</span>.<br />
+    Also the number of ints in <span class="var">cube_indices</span> should
+    be a multiple of 3 because each group of 3 indices represents a
+    triangle face.
+  </p>
+  <p>
+    Here is a demonstration that we actually save space here:<br />
+    In <span class="var">cube_vertices</span> we have 8 vertices,
+    each being made of 6 floats.<br />
+    (8 * 6) = 48<br />
+    In <span class="var">cube_indices</span>
+    each square is made of 2 triangles, so 6 ints by square, and
+    we have 6 squares.<br />
+    (6 * 6) = 36<br />
+    So the total is:<br />
+    (48 floats + 36 ints) = 84 things
+  </p>
+  <p>
+    If we had use the previous model with our cube, the space used would be:<br />
+    (6 * 6 * 6 floats) = 216 floats
+  </p>
+  <p>
+    Moreover with the indexed model we can use ints of smaller size
+    than 32 bits.<br />
+    In the current sample you can replace
+    <code class="hili">Bigarray.int</code> by
+    <code class="hili">Bigarray.int8_unsigned</code>
+    in conjunction with replacing
+    <code class="hili">Elem.GL_UNSIGNED_INT</code> by
+    <code class="hili">Elem.GL_UNSIGNED_BYTE</code>
+    with the function <span class="var">glDrawElements0</span>.
+    Then you can define a mesh with 256 vertices or less.<br />
+    It is also possible to use the pair
+    <code class="hili">Bigarray.int16_unsigned</code> &amp;
+    <code class="hili">Elem.GL_UNSIGNED_SHORT</code>, and then
+    you can define a mesh with 65536 vertices or less.<br />
+  </p>
+  <p>
+    In addition hardware usually has vertex cashing so a vertex used
+    several times may only need to be computed (rasterised) once.
+    <!--
+    The vertex cash is limited in size so it makes sense to draw neighboring
+    polygons after each other. So drawing the polygons in a object in a random
+    order is not recommended.
+    -->
+  </p>
+  </div>
+
+  <h3 id="def_mixedbuf">Mixed Buffers</h3>
+  <div class="nt">
+  <p>
+    Here <span class="var">cube_vertices</span> contains both RGB colors
+    and XYZ coordinates of the vertices. By the way in the vertex shader
+    we don't only input <span class="var">"VertexPosition"</span> but
+    also the attribute <span class="var">"VertexColor"</span>.<br />
+    So in the display callback we enable both with
+    <code>glEnableVertexAttribArray</code>.<br />
+    Also calling <code>glVertexAttribPointerOfs32</code> is a bit trickier
+    than in the first example, here we have a <span class="var">stride</span>
+    of 6, and an <span class="var">offset</span> of 3 for vertices' positions.<br />
+  </p>
+  </div>
+
+  <h3 id="def_interpol">Interpolated Variables</h3>
+  <div class="nt">
+  <p>
+    In this vertex shader the input <span class="var">VertexColor</span>
+    is connected to the output <span class="var">InterpolatedColor</span>.
+    This ouput of the vertex shader is connected to the input of the
+    fragment shader of the same name.<br />
+    <span class="var">InterpolatedColor</span> is declared with the
+    keyword <span class="var">smooth</span> in both the vertex and
+    the fragment shaders so while rasterising the triangle face
+    this value will be "interpolated" from the different values
+    of the three vertices.
+  </p>
+  </div>
+
+  <h3 id="def_compstat">Checking Shader Compile Status</h3>
+  <div class="nt">
+  <p>
+    If <span class="var">glGetShaderCompileStatus</span> returns true
+    this means that the shader's source was compiled right.
+    If not it's possible to get some informations with
+    <span class="var">glGetShaderInfoLog</span>.<br />
+    <span class="var">glGetShaderCompileStatus_exn</span> is similar
+    to <span class="var">glGetShaderCompileStatus</span> but returns
+    unit if the compilation was right and if not it raises an exception.
+  </p>
+  </div>
+
+  <h3 id="def_depth">The Depth Buffer</h3>
+  <div class="nt">
+  <p>
+    The <a href="http://en.wikipedia.org/wiki/Z-buffering">depth buffer</a>
+    enables to make depth-test while drawing fragements, so that
+    we don't need to sort our faces from the farther to the closer
+    along the Z axis before to draw. Moreover such a sort wouldn't
+    enable to draw correctly intersecting faces.
+  </p>
+  <p>
+    To enable the depth buffer we need to provide <code>GLUT_DEPTH</code>
+    to <code>glutInitDisplayMode</code>, and then we need to enable
+    the depth test with a call to <code>glEnable&nbsp;GL_DEPTH_TEST;</code>.
+    At any point it is possible to disable the depth test with
+    <code>glDisable&nbsp;GL_DEPTH_TEST;</code> for example to draw some
+    overlying text. But OpenGL being a state machine you need
+    to re-enable it after if you need it again.
+    For these kind of issues you can use functions from
+    <span class="var">FunGL</span> instead of
+    the equivalent functions from the base module
+    <span class="var">GL</span>. In this case we could use
+    <span class="var">FunGL.draw_enabled</span> instead of
+    <span class="var">glEnable</span> to get only a local effect.
+  </p>
+  <p>
+    Finally before drawing each frame we need to clear the content
+    of this depth buffer providing the parameter
+    <code>GL_DEPTH_BUFFER_BIT</code> to <code>glClear</code>.
+  </p>
+  </div>
+
+  <h3 id="def_cullface">Back-Face Culling</h3>
+  <div class="nt">
+  <p>
+    Here our cube is closed so we see only its front faces.
+    <a href="http://en.wikipedia.org/wiki/Back-face_culling">Back-face culling</a>
+    enables to draw only the front faces.
+    We determine which side is the front or the back whether
+    the vertices of the face are given in a 
+    <a href="http://en.wikipedia.org/wiki/Clockwise">clockwise</a> or
+    a counter clockwise way. We do this with
+    <code>glFrontFace GL_CCW;</code>
+    <span class="var">GL_CCW</span> selects counterclockwise polygons as
+    front-facing, <span class="var">GL_CW</span> selects clockwise polygons
+    as front-facing.<br />
+    <code>glEnable GL_CULL_FACE;</code> activates elimination of polygons.
+    <code>glCullFace GL_BACK;</code> tells that we want to remove the back
+    side of polygons.
+  </p>
+  <p>
+    You can see the effect if you comment one line in
+    <span class="var">cube_indices</span>.
+  </p>
+  </div>
+
+
+
+  <hr />
+  <!-- ======================================================== -->
+
+  <h2 id="def_unproject">Unproject</h2>
+
+  <div>
+  <p>
+    We use the projection matrix to transform 3D world coords into window 2D coords.
+    When we want to get mouse interaction where the location of the mouse will draw
+    something in the 3D world, we need to make the opposite operation which is
+    called "unprojection" and we use a function for this called "unproject".
+    The module <span class="var">Ogl_matrix</span> provides this function.
+  </p>
+  </div>
+
+<!-- {{{ UnProject -->
+<pre>
+<span class="Stat">open</span> <span class="PreProc">Glut</span>
+<span class="Stat">open</span> <span class="PreProc">GL</span>
+<span class="Stat">open</span> <span class="PreProc">VertArray</span>
+<span class="Stat">open</span> <span class="PreProc">VBO</span>
+
+<span class="Stat">open</span> <span class="PreProc">Ogl_draw</span>
+<span class="Stat">open</span> <span class="PreProc">Ogl_matrix</span>
+
+
+<span class="Comm">(* position of the mouse pointer *)</span>
+<span class="Stat">let</span> px <span class="Stat">=</span> ref <span class="Cnst">0.0</span>
+<span class="Stat">let</span> py <span class="Stat">=</span> ref <span class="Cnst">0.0</span>
+
+<span class="Comm">(* coordinate bounds of the window *)</span>
+<span class="Stat">let</span> x_min <span class="Stat">=</span> -<span class="Cnst">4.0</span> <span class="Stat">and</span> x_max <span class="Stat">=</span> <span class="Cnst">4.0</span>
+<span class="Stat">and</span> y_min <span class="Stat">=</span> -<span class="Cnst">3.0</span> <span class="Stat">and</span> y_max <span class="Stat">=</span> <span class="Cnst">3.0</span>
+<span class="Stat">and</span> z_min, z_max <span class="Stat">=</span> -<span class="Cnst">2.0</span>, <span class="Cnst">20.0</span>
+
+<span class="Comm">(* left button down *)</span>
+<span class="Stat">let</span> ldown <span class="Stat">=</span> ref <span class="Cnst">false</span>
+
+<span class="Comm">(* identity matrix *)</span>
+<span class="Stat">let</span> id_mat <span class="Stat">=</span> <span class="PreProc">Ogl_matrix</span>.get_identity<span class="Cnst">()</span>
+
+<span class="Comm">(* the projection matrix *)</span>
+<span class="Stat">let</span> proj_mat <span class="Stat">=</span> ref id_mat
+
+<span class="Comm">(* the rendering area *)</span>
+<span class="Stat">let</span> viewport <span class="Stat">=</span> ref <span class="Stat">(</span><span class="Cnst">0</span>,<span class="Cnst">0</span>,<span class="Cnst">0</span>,<span class="Cnst">0</span><span class="Stat">)</span>
+
+
+<span class="Stat">let</span> display mesh <span class="Cnst">()</span> <span class="Stat">=</span>
+  glClear <span class="Stat">[</span><span class="Cnst">GL_COLOR_BUFFER_BIT</span><span class="Stat">]</span><span class="Stat">;</span>
+
+  <span class="Comm">(* just display the mouse pointer *)</span>
+  <span class="Stat">let</span> position <span class="Stat">=</span> <span class="Stat">(</span><span class="Stat">!</span>px, <span class="Stat">!</span>py, <span class="Cnst">0.0</span><span class="Stat">)</span> <span class="Stat">in</span>
+
+  <span class="Comm">(* with a different color when the left button is down *)</span>
+  <span class="Stat">let</span> color <span class="Stat">=</span>
+    <span class="Stat">if</span> <span class="Stat">!</span>ldown
+    <span class="Stat">then</span> <span class="Stat">(</span><span class="Cnst">1.0</span>, <span class="Cnst">0.0</span>, <span class="Cnst">0.0</span><span class="Stat">)</span>
+    <span class="Stat">else</span> <span class="Stat">(</span><span class="Cnst">1.0</span>, <span class="Cnst">1.0</span>, <span class="Cnst">0.0</span><span class="Stat">)</span>
+  <span class="Stat">in</span>
+
+  <span class="Stat">let</span> model_mat <span class="Stat">=</span> <span class="PreProc">Ogl_matrix</span>.translation_matrix position <span class="Stat">in</span>
+  <span class="Stat">let</span> model_proj_matrix <span class="Stat">=</span> <span class="PreProc">Ogl_matrix</span>.mult_matrix <span class="Stat">!</span>proj_mat model_mat <span class="Stat">in</span>
+  <span class="PreProc">Ogl_draw</span>.draw_mesh <span class="Stat">~</span><span class="Idnt">color</span> model_proj_matrix mesh<span class="Stat">;</span>
+
+  glFlush <span class="Cnst">()</span><span class="Stat">;</span>
+  glutSwapBuffers <span class="Cnst">()</span><span class="Stat">;</span>
+<span class="Stat">;;</span>
+
+
+<span class="Stat">let</span> unproject_util <span class="Stat">~</span><span class="Idnt">x</span> <span class="Stat">~</span><span class="Idnt">y</span> <span class="Stat">=</span>
+  <span class="Stat">let</span> v1, v2, v3, v4 <span class="Stat">=</span> <span class="Stat">!</span>viewport <span class="Stat">in</span>
+  <span class="Stat">let</span> mx, my, <span class="Stat">_</span> <span class="Stat">=</span>
+    <span class="PreProc">Ogl_matrix</span>.unproject
+      <span class="Stat">~</span><span class="Idnt">model</span>:id_mat <span class="Stat">~</span><span class="Idnt">proj</span>:<span class="Stat">!</span>proj_mat
+      <span class="Stat">~</span><span class="Idnt">viewport</span>:<span class="Stat">[|</span> v1<span class="Stat">;</span> v2<span class="Stat">;</span> v3<span class="Stat">;</span> v4 <span class="Stat">|]</span>
+      <span class="Stat">~</span><span class="Idnt">win_x</span>:<span class="Stat">(</span><span class="Type">float</span> x<span class="Stat">)</span>
+      <span class="Stat">~</span><span class="Idnt">win_y</span>:<span class="Stat">(</span><span class="Type">float</span> <span class="Stat">(</span>v4 - y<span class="Stat">))</span>
+      <span class="Stat">~</span><span class="Idnt">win_z</span>:<span class="Cnst">0.0</span>
+  <span class="Stat">in</span>
+  <span class="Stat">(</span>mx, my<span class="Stat">)</span>
+
+
+<span class="Comm">(* convert the coordinates of the mouse</span>
+<span class="Comm">   from window coordinates to the local</span>
+<span class="Comm">   representation *)</span>
+<span class="Stat">let</span> unproject_coords <span class="Stat">~</span><span class="Idnt">x</span> <span class="Stat">~</span><span class="Idnt">y</span> <span class="Stat">=</span>
+  <span class="Stat">let</span> mx, my <span class="Stat">=</span> unproject_util <span class="Stat">~</span><span class="Idnt">x</span> <span class="Stat">~</span><span class="Idnt">y</span> <span class="Stat">in</span>
+  px <span class="Stat">:=</span> mx<span class="Stat">;</span>
+  py <span class="Stat">:=</span> my<span class="Stat">;</span>
+<span class="Stat">;;</span>
+
+<span class="Comm">(* active mouse motion *)</span>
+<span class="Stat">let</span> motion <span class="Stat">~</span><span class="Idnt">x</span> <span class="Stat">~</span><span class="Idnt">y</span> <span class="Stat">=</span>
+  unproject_coords <span class="Stat">~</span><span class="Idnt">x</span> <span class="Stat">~</span><span class="Idnt">y</span><span class="Stat">;</span>
+<span class="Stat">;;</span>
+
+<span class="Comm">(* passive mouse motion *)</span>
+<span class="Stat">let</span> passive <span class="Stat">~</span><span class="Idnt">x</span> <span class="Stat">~</span><span class="Idnt">y</span> <span class="Stat">=</span>
+  unproject_coords <span class="Stat">~</span><span class="Idnt">x</span> <span class="Stat">~</span><span class="Idnt">y</span><span class="Stat">;</span>
+<span class="Stat">;;</span>
+
+<span class="Comm">(* mouse button event *)</span>
+<span class="Stat">let</span> mouse <span class="Stat">~</span><span class="Idnt">button</span> <span class="Stat">~</span><span class="Idnt">state</span> <span class="Stat">~</span><span class="Idnt">x</span> <span class="Stat">~</span><span class="Idnt">y</span> <span class="Stat">=</span>
+  unproject_coords <span class="Stat">~</span><span class="Idnt">x</span> <span class="Stat">~</span><span class="Idnt">y</span><span class="Stat">;</span>
+  <span class="Stat">match</span> button, state <span class="Stat">with</span>
+  <span class="Stat">|</span> <span class="Cnst">GLUT_LEFT_BUTTON</span>, <span class="Cnst">GLUT_DOWN</span> <span class="Stat">-&gt;</span> ldown <span class="Stat">:=</span> <span class="Cnst">true</span><span class="Stat">;</span>
+  <span class="Stat">|</span> <span class="Cnst">GLUT_LEFT_BUTTON</span>, <span class="Cnst">GLUT_UP</span> <span class="Stat">-&gt;</span> ldown <span class="Stat">:=</span> <span class="Cnst">false</span><span class="Stat">;</span>
+  <span class="Stat">|</span> <span class="Stat">_</span> <span class="Stat">-&gt;</span> <span class="Cnst">()</span>
+<span class="Stat">;;</span>
+
+<span class="Stat">let</span> keyboard <span class="Stat">~</span><span class="Idnt">key</span> <span class="Stat">~</span><span class="Idnt">x</span> <span class="Stat">~</span><span class="Idnt">y</span> <span class="Stat">=</span>
+  <span class="Stat">match</span> key <span class="Stat">with</span>
+  <span class="Stat">|</span> <span class="Cnst">'q'</span> <span class="Stat">|</span> <span class="Cnst">'\027'</span> <span class="Stat">-&gt;</span> exit <span class="Cnst">0</span>
+  <span class="Stat">|</span> <span class="Stat">_</span> <span class="Stat">-&gt;</span> <span class="Cnst">()</span>
+<span class="Stat">;;</span>
+
+<span class="Stat">let</span> reshape  <span class="Stat">~</span><span class="Idnt">width</span>:w <span class="Stat">~</span><span class="Idnt">height</span>:h <span class="Stat">=</span>
+  glViewport <span class="Cnst">0</span> <span class="Cnst">0</span> w h<span class="Stat">;</span>
+  viewport <span class="Stat">:=</span> <span class="Stat">(</span><span class="Cnst">0</span>, <span class="Cnst">0</span>, w, h<span class="Stat">)</span><span class="Stat">;</span>
+  proj_mat <span class="Stat">:=</span>
+    <span class="Stat">if</span> w <span class="Stat">&lt;</span><span class="Stat">=</span> h
+    <span class="Stat">then</span> ortho_projection x_min x_max y_min y_max z_min z_max
+    <span class="Stat">else</span> ortho_projection x_min x_max y_min y_max z_min z_max
+    <span class="Comm">(*</span>
+<span class="Comm">    (* if the ratio (x_max - x_min) / (y_max - y_min) was 1.0 *)</span>
+<span class="Comm">    if w &lt;= h then</span>
+<span class="Comm">      ortho_projection</span>
+<span class="Comm">          x_min x_max (y_min *. float h /. float w)</span>
+<span class="Comm">                      (y_max *. float h /. float w) z_min z_max</span>
+<span class="Comm">    else</span>
+<span class="Comm">      ortho_projection</span>
+<span class="Comm">            (x_min *. float w /. float h)</span>
+<span class="Comm">            (x_max *. float w /. float h) y_min y_max z_min z_max</span>
+<span class="Comm">    *)</span>
+<span class="Stat">;;</span>
+
+<span class="Stat">let</span> idle <span class="Cnst">()</span> <span class="Stat">=</span>
+  glutPostRedisplay <span class="Cnst">()</span><span class="Stat">;</span>
+<span class="Stat">;;</span>
+
+<span class="Stat">let</span> gl_init <span class="Cnst">()</span> <span class="Stat">=</span>
+  glClearColor <span class="Cnst">0.5</span> <span class="Cnst">0.5</span> <span class="Cnst">0.5</span>  <span class="Cnst">0.0</span><span class="Stat">;</span>
+<span class="Stat">;;</span>
+
+<span class="Stat">let</span> <span class="Cnst">()</span> <span class="Stat">=</span>
+  ignore<span class="Stat">(</span>glutInit <span class="PreProc">Sys</span>.argv<span class="Stat">)</span><span class="Stat">;</span>
+  glutInitDisplayMode <span class="Stat">[</span><span class="Cnst">GLUT_DOUBLE</span><span class="Stat">;</span> <span class="Cnst">GLUT_RGB</span><span class="Stat">]</span><span class="Stat">;</span>
+  <span class="Comm">(* (800 / 600) same ratio than (x_max - x_min) / (y_max - y_min) *)</span>
+  glutInitWindowSize <span class="Cnst">800</span> <span class="Cnst">600</span><span class="Stat">;</span>
+  glutInitWindowPosition <span class="Cnst">100</span> <span class="Cnst">100</span><span class="Stat">;</span>
+  ignore<span class="Stat">(</span>glutCreateWindow <span class="PreProc">Sys</span>.argv.<span class="Stat">(</span><span class="Cnst">0</span><span class="Stat">))</span><span class="Stat">;</span>
+  glutSetCursor <span class="Cnst">GLUT_CURSOR_NONE</span><span class="Stat">;</span>
+
+  gl_init <span class="Cnst">()</span><span class="Stat">;</span>
+
+  <span class="Stat">let</span> vertices <span class="Stat">=</span> <span class="Cnst">Vertices3</span> <span class="Stat">[|</span>
+    <span class="Stat">(</span>-<span class="Cnst">0.2</span>,  <span class="Cnst">0.2</span>, <span class="Cnst">0.0</span><span class="Stat">)</span><span class="Stat">;</span>
+    <span class="Stat">(</span> <span class="Cnst">0.2</span>,  <span class="Cnst">0.2</span>, <span class="Cnst">0.0</span><span class="Stat">)</span><span class="Stat">;</span>
+    <span class="Stat">(</span> <span class="Cnst">0.2</span>, -<span class="Cnst">0.2</span>, <span class="Cnst">0.0</span><span class="Stat">)</span><span class="Stat">;</span>
+    <span class="Stat">(</span>-<span class="Cnst">0.2</span>, -<span class="Cnst">0.2</span>, <span class="Cnst">0.0</span><span class="Stat">)</span><span class="Stat">;</span> <span class="Stat">|]</span> <span class="Stat">in</span>
+  <span class="Stat">let</span> indices <span class="Stat">=</span> <span class="Stat">[|</span> <span class="Stat">(</span><span class="Cnst">0</span>, <span class="Cnst">1</span>, <span class="Cnst">2</span><span class="Stat">)</span><span class="Stat">;</span>  <span class="Stat">(</span><span class="Cnst">0</span>, <span class="Cnst">2</span>, <span class="Cnst">3</span><span class="Stat">)</span> <span class="Stat">|]</span> <span class="Stat">in</span>
+  <span class="Stat">let</span> mesh <span class="Stat">=</span> <span class="PreProc">Ogl_draw</span>.make_mesh <span class="Stat">~</span><span class="Idnt">indices</span> <span class="Stat">~</span><span class="Idnt">vertices</span> <span class="Stat">in</span>
+
+  glutDisplayFunc <span class="Stat">~</span><span class="Idnt">display</span>:<span class="Stat">(</span>display mesh<span class="Stat">)</span><span class="Stat">;</span>
+  glutReshapeFunc <span class="Stat">~</span><span class="Idnt">reshape</span><span class="Stat">;</span>
+  glutIdleFunc <span class="Stat">~</span><span class="Idnt">idle</span><span class="Stat">;</span>
+  glutMouseFunc <span class="Stat">~</span><span class="Idnt">mouse</span><span class="Stat">;</span>
+  glutKeyboardFunc <span class="Stat">~</span><span class="Idnt">keyboard</span><span class="Stat">;</span>
+  glutMotionFunc <span class="Stat">~</span><span class="Idnt">motion</span><span class="Stat">;</span>
+  glutPassiveMotionFunc <span class="Stat">~</span><span class="Idnt">passive</span><span class="Stat">;</span>
+
+  print_endline <span class="Cnst">&quot;&gt; move the mouse in the window&quot;</span><span class="Stat">;</span>
+  glutMainLoop <span class="Cnst">()</span>
+</pre>
+<!-- }}} -->
+
+  <hr />
+  <!-- ======================================================== -->
+
+  <h2 id="def_further">Going Further</h2>
+
+  <div>
+  <p>
+    This was an introduction about OpenGL programming in OCaml in
+    a forward-compatible way. It is quite low level and perhaps not
+    very easy to begin in case you're a beginner, but in the glMLite
+    tarball there is a higher-level module <strong>Ogl_draw</strong>
+    that you can use in conjunction with <strong>Ogl_matrix</strong>,
+    both are in the directory
+    "<a href="https://github.com/fccm/glMLite/tree/master/Incubating">Incubating</a>"
+    of glMLite
+    (the 3 stands for OpenGL <span style="text-decoration:underline;">3</span>).
+    With the module <strong>Ogl_draw</strong> you don't need anymore
+    to learn GLSL and you don't need
+    to write VBO, this module does this for you, and you can just give
+    meshes in a high-level way, and draw it with a single function.
+    There is one example of use with the file "ogl3_highlevel.ml".
+    These two modules are supposed to be forward-compatible
+    (and if they are not, they are very close to be).
+  </p>
+  </div>
+
+
+  <hr />
+  <!-- ======================================================== -->
+
+  <div>
+    <a href="https://www.gnu.org/licenses/fdl-1.2.en.html">GNU/FDL</a>
+    &nbsp; &copy; 2010 &nbsp; Florent Monnier<br />
+    <!--
+    <div id="contact">&nbsp;</div>
+    -->
+  </div>
+
+  <!-- ======================================================== -->
+  <hr />
+
+
+  <h4 id="def_licence">Copying</h4>
+
+  <div class="notice">
+    Permission is granted to copy, distribute and/or modify this document under the terms
+    of the GNU free Documentation License, Version 1.1 or any later version published by
+    the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts and
+    no Back-Cover Texts.<br />
+    You can read the full text of the "GNU Free Documentation License" on the
+    <a href="https://www.gnu.org/licenses/fdl-1.2.en.html">gnu.org website</a>.
+  </div>
+
+  <div class="notice">
+    The pieces of code can be considered in the
+    <a href="http://creativecommons.org/publicdomain/zero/1.0/">public domain</a>.
+  </div>
+
+  <!-- ======================================================== -->
+  <hr />
+
+  <div class="notice">
+    Alternatively, you may also use these contents under
+    <a href="http://creativecommons.org/licenses/by-sa/2.5/"
+    >CC-by-sa license</a>
+    (any version).
+  </div>
+
+  <div class="notice">
+    <small>(Last updates: 2013-03-12 ; 2025-08-28)</small>
+  </div>
+
+  <hr />
+
+  <!--
+  <div>
+    Camelly Yours!<br />
+  </div>
+  -->
+
+  <div style="margin-top:1.2em; border:0;">
+    <a href="https://ocaml.org" title="OCaml website"
+     ><img src="../ocaml-logo.png"
+       alt="The OCaml Language" style="border:none;" /></a>
+  </div>
+
+</body>
+</html>
+<!-- vim: sw=2 sts=2 ts=2 et fdm=marker nowrap
+ -->
