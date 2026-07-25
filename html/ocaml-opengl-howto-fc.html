@@ -5,7 +5,7 @@
 <!-- {{{ head -->
 <head>
   <title>Beginning with OpenGL in OCaml</title>
-  <link href="../ocaml-icon.png" rel="shortcut icon" />
+  <link href="https://fccm2.github.io/fccm-ocaml-home/html/icon/ocaml-icon.3.png" rel="shortcut icon" />
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
   <meta name="keywords" content="ocaml, opengl, tutorial, documentation, beginner" />
   <meta name="Author" content="Florent Monnier" />
@@ -295,14 +295,14 @@ code.hili {
   <h2 id="def_bindings">In OCaml</h2>
 
   <div>
-    The examples presented on this web-page use the OCaml-OpenGL interface
-    <a href="http://decapode314.free.fr/ocaml/GL/">glMLite</a>
-    (<a href="https://github.com/fccm/glMLite" alt="glMLite on GitHub">GH</a>).
+    The examples presented on this web-page use the ocaml-opengl interface
+    <a href="https://fccm2.github.io/w-glmlite/html/home.html">glmlite</a>
+    (<a href="https://github.com/fccm2/glmlite.alt" alt="glmlite-on-github">gh</a>).
     You can have an overview of the modules that it provides through its ocamldoc generated
-    <a href="http://decapode314.free.fr/ocaml/GL/doc/">documentation</a>.
+    <a href="https://fccm2.github.io/w-glmlite/html/manual.html">documentation</a>.
     The GL module (the core OpenGL functions) provides links to the manual pages for each
     functions of the OpenGL API.<br />
-    After each deprecated function there is "<span style="color:red; font-weight:bold;">Deprecated</span>"
+    After each deprecated function there is "<span style="color:red;font-weight:bold;">Deprecated</span>"
     written in red.<br />
     Also if you do care to not use any deprecated feature you can compile glMLite so that
     calling any deprecated function will raise an exception. To compile glMLite like so, use:<br />
@@ -349,8 +349,7 @@ code.hili {
     library. It is portable, simple to use, and it is designed to work with
     OpenGL.<br />
     glMLite also provides a
-    <a href="http://decapode314.free.fr/ocaml/GL/doc/Glut.html"
-      >Glut module</a>.<br />
+    <a href="https://fccm2.github.io/w-glmlite/html/man/Glut.html">Glut module</a>.<br />
     There are other solutions to handle windowing and user interactions:
   </p>
   </div>
@@ -360,9 +359,9 @@ code.hili {
     <li>The GtkGLarea of the GTK bindings LablGTK <em>(packaged)</em></li>
     <li>LablTK <em>(packaged)</em></li>
     <li>GLX with the Xlib with its ocaml bindings
-      <a href="http://decapode314.free.fr/ocaml/Xlib/">ocaml-xlib</a></li>
+      <a href="https://fccm2.github.io/fccm-ocaml-home/html/ocaml/xlib/x-lib.html">ocaml-xlib</a></li>
     <li>SFML with its bindings
-      <a href="http://decapode314.free.fr/ocaml/SFML/">ocaml-sfml</a></li>
+      <a href="https://fccm2.github.io/fccm-ocaml-home/html/ocaml/sfml/sfml.html">ocaml-sfml</a></li>
   </ul>
 
   <hr />
@@ -376,8 +375,8 @@ code.hili {
     To draw things on screen we use primitives, and in OpenGL the primitives are very
     low-level, there are points, lines (segments), and triangle faces.
     The gl-enum for this is the
-    <a href="http://decapode314.free.fr/ocaml/GL/doc/GL.html#TYPEprimitive"
-      >type primitive</a> in the module GL.
+    <a href="https://fccm2.github.io/w-glmlite/html/man/GL.html#TYPEprimitive">type primitive</a>
+    in the module GL.
     Quadrilaterals (polygons with four sides) and polygons with more than four sides
     are now deprecated in OpenGL, so we should only use triangle faces now,
     what is anyway what we use the more.
@@ -524,7 +523,7 @@ code.hili {
     Let's start looking at the <em>main</em> / the entry point,
     the first function called is <strong>glutInit</strong>
     <a href="http://www.opengl.org/resources/libraries/glut/spec3/node10.html"><img
-       src="./external.png" /></a>
+       src="./ressources/link.png" /></a>
     with <code>Sys.argv</code> as parameter, it will initialise the Glut library.
     If the <code>Sys.argv</code> array contains parameters specific to OpenGL/Glut,
     those parameters will be stripped from the array returned by this function. This way
@@ -540,7 +539,7 @@ code.hili {
     the background buffer is swaped with the foreground buffer with the function
     <strong>glutSwapBuffers</strong>
     <a href="http://www.opengl.org/resources/libraries/glut/spec3/node21.html"><img
-       src="./external.png" /></a>
+       src="./ressources/link.png" /></a>
     which is called at the end of the <em>display</em>
     callback. If you use another windowing library than Glut, you will still find
     equivalents to these functions that you will have to use to get a similar effect.
@@ -560,12 +559,12 @@ code.hili {
     that we provide to the function
     <strong>glutInitDisplayMode</strong>
     <a href="http://www.opengl.org/resources/libraries/glut/spec3/node12.html"><img
-       src="./external.png" /></a>.
+       src="./ressources/link.png" /></a>.
   </p>
   <p>
     Then the window is created with <strong>glutCreateWindow</strong>
     <a href="http://www.opengl.org/resources/libraries/glut/spec3/node16.html"><img
-       src="./external.png" /></a>,
+       src="./ressources/link.png" /></a>,
     the parameter is the title which will appear in the handle of the window.
     It returns the ID of the created window, but here we can just ignore it.
   </p>
@@ -580,7 +579,7 @@ code.hili {
     which will be called each time a new frame will be drawn.
     Register this callback with <strong>glutDisplayFunc</strong>
     <a href="http://www.opengl.org/resources/libraries/glut/spec3/node46.html"><img
-      src="./external.png" /></a>.
+      src="./ressources/link.png" /></a>.
     The display callback should have type <code>unit -&gt; unit</code>, but
     we can provide additional parameters by <a href="http://en.wikipedia.org/wiki/Currying"
       >partial application</a>.
@@ -589,7 +588,7 @@ code.hili {
   <p>
     Now the function <strong>glutMainLoop</strong>
     <a href="http://www.opengl.org/resources/libraries/glut/spec3/node14.html"><img
-       src="./external.png" /></a>
+       src="./ressources/link.png" /></a>
     will make the program enter in the main execution loop.
     Depending on the Glut implementation you're using this function never returns (in this
     case exit the program with the exit function) or with more recent Glut (such as OpenGlut
@@ -616,15 +615,15 @@ code.hili {
     (the {X,Y,Z} coordinates).<br />
     With <strong>glGenBuffer</strong>
     <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glGenBuffers.xhtml"><img
-      src="./external.png" /></a>
+      src="./ressources/link.png" /></a>
     we create an id to handle the VBO, then with
     <strong>glBindBuffer</strong>
     <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBindBuffer.xhtml"><img
-      src="./external.png" /></a>
+      src="./ressources/link.png" /></a>
     we select this vbo as the active one for the following buffer operations,
     which is <strong>glBufferData</strong>
     <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBufferData.xhtml"><img
-      src="./external.png" /></a>
+      src="./ressources/link.png" /></a>
     used to upload the contents of the bigarray to the video-device.
     <code>GL_STATIC_DRAW</code> indicates that the data contained in the buffer
     won't change.<br />
@@ -648,7 +647,7 @@ code.hili {
     <br />
     The function <strong>glUseProgram</strong>
     <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glUseProgram.xhtml"><img
-      src="./external.png" /></a>
+      src="./ressources/link.png" /></a>
     selects which shader to use to make the rendering of the
     primitives (here there is only one shader program),
     and glBindBuffer selects which vbo we want to use.
@@ -658,11 +657,11 @@ code.hili {
     We do this in several steps with
     <strong>glEnableVertexAttribArray</strong>
     <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glEnableVertexAttribArray.xhtml"><img
-      src="./external.png" /></a>
+      src="./ressources/link.png" /></a>
     (enables this input in the shader),
     <strong>glVertexAttribPointerOfs32</strong>
     <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glVertexAttribPointer.xhtml"><img
-      src="./external.png" /></a>
+      src="./ressources/link.png" /></a>
     (specifies the format of this input),
     (you will understand better what those operations do after the explanation
     of the shader).<br />
@@ -711,7 +710,7 @@ code.hili {
     The source code of the shaders are provided to OpenGL with the function
     <strong>glShaderSource</strong>
     <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glShaderSource.xhtml"><img
-      src="./external.png" /></a>
+      src="./ressources/link.png" /></a>
     which takes it as a string, so that the glsl source code can be
     embeded into an ocaml string as in this example with the two strings
     <span class="var">vertex_shader_src</span> and
@@ -753,11 +752,11 @@ invariant <span class="Type">gl_Position</span>;
     This connection is made with
     <strong>glEnableVertexAttribArray</strong>
     <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glEnableVertexAttribArray.xhtml"><img
-      src="./external.png" /></a>
+      src="./ressources/link.png" /></a>
     and
     <strong>glVertexAttribPointerOfs32</strong>
     <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glVertexAttribPointer.xhtml"><img
-      src="./external.png" /></a>
+      src="./ressources/link.png" /></a>
     with this variable <span class="var">vertexPosAttrib</span>.
     The first function just enables to access this attribute.
     The second one is trickier, let's have a look at its interface:
@@ -1376,7 +1375,7 @@ invariant <span class="Type">gl_Position</span>;
     hard resource consumers. Here the Idle will call
     <strong>glutPostRedisplay</strong>
     <a href="http://www.opengl.org/resources/libraries/glut/spec3/node20.html"><img
-       src="./external.png" /></a>
+       src="./ressources/link.png" /></a>
     which is a function that will request a new frame redraw at the end of the current
     function. So this program will draw frames greedily, and by the way we can
     check how many frames per seconds (fps) our program is able to draw.
@@ -1830,7 +1829,7 @@ invariant <span class="Type">gl_Position</span>;
   </div>
 
   <div class="notice">
-    The pieces of code can be considered in the
+    To the extent permitted by law, the pieces of code can be considered in the
     <a href="http://creativecommons.org/publicdomain/zero/1.0/">public domain</a>.
   </div>
 
@@ -1839,9 +1838,8 @@ invariant <span class="Type">gl_Position</span>;
 
   <div class="notice">
     Alternatively, you may also use these contents under
-    <a href="http://creativecommons.org/licenses/by-sa/2.5/"
-    >CC-by-sa license</a>
-    (any version).
+    <a href="http://creativecommons.org/licenses/by-sa/2.5/">cc-by-sa license</a>
+    (any-version).
   </div>
 
   <div class="notice">
@@ -1856,9 +1854,9 @@ invariant <span class="Type">gl_Position</span>;
   </div>
   -->
 
-  <div style="margin-top:1.2em; border:0;">
+  <div style="margin-top:1.2em;border:0;">
     <a href="https://ocaml.org" title="OCaml website"
-     ><img src="../ocaml-logo.png"
+     ><img src="https://fccm2.github.io/fccm-ocaml-home/html/icon/ocaml-logo.png"
        alt="The OCaml Language" style="border:none;" /></a>
   </div>
 
