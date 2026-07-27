@@ -3,7 +3,7 @@
  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <title>Beginning with OpenGL in OCaml</title>
+  <title>Beginning OpenGL with OCaml</title>
   <link href="../ocaml-icon.png" rel="shortcut icon" />
   <meta http-equiv="content-type" content="text/html; charset=utf8" />
   <meta name="keywords" content="ocaml, opengl, tutorial, documentation, beginner" />
@@ -121,7 +121,7 @@ pre {
 <body>
   <div id="lang_switch"><a href="./ocaml-opengl-howto.fr.html">lire en fran&ccedil;ais</a></div>
 
-  <h1>Beginning with OpenGL in OCaml</h1>
+  <h1>Beginning OpenGL with OCaml</h1>
   <h2 style="font-size: 0.9em; display:none">Quick-Start examples in OCaml with OpenGL</h2>
 
   <div>
@@ -148,7 +148,7 @@ pre {
 
   <div>
     So maybe you will prefer the other tutorial about the 
-    <a href="ocaml-opengl-howto-fc.html">foreward compatible way</a>.
+    <a href="./ocaml-opengl-howto-fc.html">foreward compatible way</a>.
   </div>
 
   <hr />
@@ -196,7 +196,7 @@ pre {
 
   <div class="nb">
     All the scripts below can be executed with this command line:<br />
-    <code>&nbsp;ocaml -I +glMLite&nbsp; GL.cma Glut.cma &nbsp;demo.ml</code><br />
+    <code>$&nbsp;ocaml -I +glMLite GL.cma Glut.cma demo.ml</code><br />
     Or alternatly you can add the following instructions at the very beginning of your files:<br />
     <code>
     #!/usr/bin/env ocaml<br />
@@ -206,8 +206,9 @@ pre {
     </code><br />
     Or if you prefer to compile to binary native code for the best performances,
     use this command:<br />
-    <code>&nbsp;ocamlopt -I +glMLite&nbsp; GL.cmxa Glut.cmxa  demo.ml &nbsp;-o demo.exe</code><br />
-    (for Linux and MacOSX, the file extension .opt will be prefered over the MS one .exe)
+    <code>$&nbsp;ocamlopt -o demo.exe -I +glMLite GL.cmxa Glut.cmxa demo.ml</code><br />
+    (for Linux and MacOSX, the file extension <code>.opt</code> will be prefered over the MS one
+    <code>.exe</code>)
   </div>
 
   <div>
@@ -217,8 +218,8 @@ pre {
   <p>
     The first thing calling <strong>glutInit</strong>
     <a href="http://www.opengl.org/resources/libraries/glut/spec3/node10.html"><img
-       src="./external.png" /></a>
-    with <code>Sys.argv</code> as parameter, will initialise the Glut library.
+       src="./ressources/link.png" /></a>
+    with <code><span class="PrPr">Sys</span>.argv</code> as parameter, will initialise the Glut library.
     If the <code>Sys.argv</code> array contains parameters specific to OpenGL/Glut,
     those parameters will be strip in the array returned by this function. This way
     your application can parse this returned array without seeing the OpenGL parameters.
@@ -226,7 +227,7 @@ pre {
   <p>
     Then the window is created with <strong>glutCreateWindow</strong>
     <a href="http://www.opengl.org/resources/libraries/glut/spec3/node16.html"><img
-       src="./external.png" /></a>,
+       src="./ressources/link.png" /></a>,
     the parameter is the title which will appear in the handle of the window.
     It returns the ID of the created window, but here we can just ignore it.
   </p>
@@ -235,13 +236,13 @@ pre {
     which will be called each time a new frame will be drawn.
     Register this callback with <strong>glutDisplayFunc</strong>
     <a href="http://www.opengl.org/resources/libraries/glut/spec3/node46.html"><img
-       src="./external.png" /></a>.
+       src="./ressources/link.png" /></a>.
      (We will examine the contents of the <strong>display</strong> callback later.)
   </p>
   <p>
     Now the function <strong>glutMainLoop</strong>
     <a href="http://www.opengl.org/resources/libraries/glut/spec3/node14.html"><img
-       src="./external.png" /></a>
+       src="./ressources/link.png" /></a>
     will make the program enter in the main execution loop.
     Depending on the Glut implementation you'r using this function never returns (in this
     case exit the program with the exit function) or with more recent Glut this main loop
@@ -268,13 +269,13 @@ pre {
   <p>
     Then the <strong>glBegin</strong>
     <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glBegin.xml"><img
-       src="./external.png" /></a>
+       src="./ressources/link.png" /></a>
     function announces that we will define a triangle.
     So a triangle will be defined untill <strong>glEnd</strong> which tells that the primitive is ended.
     Between these 2 functions have to lie at least three points which are defined with
     <strong>glVertex2</strong>
     <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glVertex.xml"><img
-       src="./external.png" /></a>.
+       src="./ressources/link.png" /></a>.
     It is possible to give more than one triangle between glBegin and glEnd, in which case to define
     N triangles, you have to provide (N * 3) vertices.
   </p>
@@ -327,13 +328,13 @@ pre {
     To make the animation fluid, the selected drawing mode with
     <strong>glutInitDisplayMode</strong>
     <a href="http://www.opengl.org/resources/libraries/glut/spec3/node12.html"><img
-       src="./external.png" /></a>
+       src="./ressources/link.png" /></a>
     is the double buffered display, which means that there are two images to process
     the rendering. One is displayed on the foreground of the drawing area, and
     a second one lies in the background and this is this last one that is used by
     drawing functions to draw the rendering, and this rendering is finished
     the background buffer is swaped with the foreground buffer with the function
-    <strong>glutSwapBuffers</strong> which is called at the end of the <em>display</em>
+    <strong>glutSwapBuffers</strong> which is called at the end of the <code>display</code>
     callback. (If you use another windowing library than Glut, you will still find
     equivalents to these functions that you will have to use to get a similar effect.)
   </p>
@@ -343,14 +344,14 @@ pre {
     hard resource consumers. Here the Idle will call
     <strong>glutPostRedisplay</strong>
     <a href="http://www.opengl.org/resources/libraries/glut/spec3/node20.html"><img
-       src="./external.png" /></a>
+       src="./ressources/link.png" /></a>
     which is a function that will request a new frame redraw at the end of the current
     function.
   </p>
   <p>
     A rotation is defined with <strong>glRotate</strong>
     <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glRotate.xml"><img
-       src="./external.png" /></a>
+       src="./ressources/link.png" /></a>
     based on the
     <a href="https://ocaml.org/api/Sys.html#VALtime">Sys.time</a>.
     function.
