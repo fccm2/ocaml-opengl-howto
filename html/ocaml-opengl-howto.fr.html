@@ -224,21 +224,21 @@ pre {
   <p>
     Premi&egrave;re chose, l'appel &agrave; <strong>glutInit</strong>
     <a href="http://www.opengl.org/resources/libraries/glut/spec3/node10.html"><img
-       src="./external.png" /></a>
+       src="./ressources/link.png" /></a>
      avec en param&egrave;tre le tableau d'arguments du script permet d'initialiser
      la biblioth&egrave;que Glut.
   </p>
   <p>
     Ensuite la fen&ecirc;tre est cr&eacute;e avec <strong>glutCreateWindow</strong>
     <a href="http://www.opengl.org/resources/libraries/glut/spec3/node16.html"><img
-       src="./external.png" /></a>,
+       src="./ressources/link.png" /></a>,
     avec un titre qui appara&icirc;tra dans son bandeau sup&eacute;rieur.
   </p>
   <p>
     Ensuite la fonction de rappel (callback) d'affichage est enregistr&eacute;
     (<strong>glutDisplayFunc</strong>
     <a href="http://www.opengl.org/resources/libraries/glut/spec3/node46.html"><img
-       src="./external.png" /></a>).
+       src="./ressources/link.png" /></a>).
     &Agrave; chaque fois que le rendu d'une frame sera requis, cette fonction sera
     appel&eacute;e pour remplir cette office.
     (Nous allons d&eacute;cortiquer le contenu de la fonction <strong>display</strong> plus bas.)
@@ -246,7 +246,7 @@ pre {
   <p>
     Enfin <strong>glutMainLoop</strong>
     <a href="http://www.opengl.org/resources/libraries/glut/spec3/node14.html"><img
-       src="./external.png" /></a>
+       src="./ressources/link.png" /></a>
     permet au programme d'entrer dans la boucle d'ex&eacute;cution principale (cette fonction
     de retourne jamais).
   </p>
@@ -262,7 +262,7 @@ pre {
     Ensuite une <a href="https://fr.wikipedia.org/wiki/Rouge_vert_bleu">couleur RGB</a>
     est d&eacute;finie avec <strong>glColor3</strong>
     <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glColor.xml"><img
-       src="./external.png" /></a>
+       src="./ressources/link.png" /></a>
     par 3 flottants entre 0.0 et 1.0.
     Ici la couleur d&eacute;finie est le rouge, toutes les primitives qui suivront seront
     dessin&eacute;es avec cette couleur
@@ -272,12 +272,12 @@ pre {
   <p>
     Ensuite la fonction <strong>glBegin</strong>
     <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glBegin.xml"><img
-       src="./external.png" /></a>
+       src="./ressources/link.png" /></a>
     annonce que l'on va d&eacute;finir un triangle.
     Entre cette fonction et <strong>glEnd</strong> qui indique la fin de la primitive,
     il devra donc y avoir trois points d&eacute;finis avec <strong>glVertex2</strong>
     <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glVertex.xml"><img
-       src="./external.png" /></a>.
+       src="./ressources/link.png" /></a>.
   </p>
   </div>
 
@@ -327,7 +327,7 @@ pre {
     Pour que l'animation soit fluide, le mode d'affichage s&eacute;lectionn&eacute; avec
     <strong>glutInitDisplayMode</strong>
     <a href="http://www.opengl.org/resources/libraries/glut/spec3/node12.html"><img
-       src="./external.png" /></a>
+       src="./ressources/link.png" /></a>
     est un affichage en double buffer, ce qui signifie qu'il y a deux images
     pour le rendu, une image en arri&egrave;re plan est utilis&eacute;e pour
     dessiner les primitives demand&eacute;es, et lorsque ce rendu est finit
@@ -341,12 +341,12 @@ pre {
     Ici cette fonction d&eacute;clenchera un nouvel affichage avec
     <strong>glutPostRedisplay</strong>
     <a href="http://www.opengl.org/resources/libraries/glut/spec3/node20.html"><img
-       src="./external.png" /></a>.
+       src="./ressources/link.png" /></a>.
   </p>
   <p>
     Une rotation est d&eacute;fine avec <strong>glRotate</strong>
     <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glRotate.xml"><img
-       src="./external.png" /></a>
+       src="./ressources/link.png" /></a>
     bas&eacute;e sur la fonction
     <a href="https://ocaml.org/api/Sys.html#VALtime">Sys.time</a>.
   </p>
