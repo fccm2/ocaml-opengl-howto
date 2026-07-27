@@ -212,7 +212,7 @@ pre {
     #load "Glut.cma"
     </code><br />
     Ou encore compil&eacute;s pour des performances optimales&nbsp;:<br />
-    <code>&nbsp;ocamlopt -I +glMLite&nbsp; GL.cmxa Glut.cmxa  demo.ml  -o demo.exe</code><br />
+    <code>$&nbsp;ocamlopt -o demo.exe -I +glMLite GL.cmxa Glut.cmxa demo.ml</code><br />
     </p>
   </div>
 
@@ -498,7 +498,7 @@ pre {
   </div>
 
 <pre>
-#load "Glu.cma"
+<span class="PreProc">#load</span> <span class="Cnst">&quot;Glu.cma&quot;</span>
 <span class="Stat">open</span> <span class="PrPr">Glu</span>
 </pre>
 
