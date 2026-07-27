@@ -199,10 +199,10 @@ pre {
     <code>$&nbsp;ocaml -I +glMLite GL.cma Glut.cma demo.ml</code><br />
     Or alternatly you can add the following instructions at the very beginning of your files:<br />
     <code>
-    #!/usr/bin/env ocaml<br />
-    #directory "+glMLite/"<br />
-    #load "GL.cma"<br />
-    #load "Glut.cma"
+    <span class="Comm">#!/usr/bin/env ocaml</span><br />
+    <span class="PreProc">#directory</span> <span class="Cnst">"+glMLite"</span><br />
+    <span class="PreProc">#load</span> <span class="Cnst">&quot;GL.cma&quot;</span><br />
+    <span class="PreProc">#load</span> <span class="Cnst">&quot;Glut.cma&quot;</span>
     </code><br />
     Or if you prefer to compile to binary native code for the best performances,
     use this command:<br />
