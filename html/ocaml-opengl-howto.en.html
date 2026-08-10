@@ -287,18 +287,18 @@ pre {
 
 <span class="Stat">let</span> display <span class="Cnst">()</span> <span class="Stat">=</span>
   glClear <span class="Stat">[</span><span class="Cnst">GL_COLOR_BUFFER_BIT</span><span class="Stat">];</span>
-  glColor3 <span class="Stat">~</span><span class="Idnt">r</span>:<span class="Cnst">1.0</span> <span class="Stat">~</span><span class="Idnt">g</span>:<span class="Cnst">0</span>. <span class="Stat">~</span><span class="Idnt">b</span>:<span class="Cnst">0</span>.<span class="Stat">;</span>
-  glBegin <span class="Cnst">GL_TRIANGLES</span><span class="Stat">;</span>
-    glVertex2 <span class="Stat">(</span>-<span class="Cnst">1.0</span><span class="Stat">) (</span>-<span class="Cnst">1.0</span><span class="Stat">);</span>
-    glVertex2 <span class="Stat">(</span> <span class="Cnst">0.0</span><span class="Stat">) (</span> <span class="Cnst">1.0</span><span class="Stat">);</span>
-    glVertex2 <span class="Stat">(</span> <span class="Cnst">1.0</span><span class="Stat">) (</span>-<span class="Cnst">1.0</span><span class="Stat">);</span>
+  glColor3 <span class="Stat">~</span><span class="Idnt">r</span>:<span class="Cnst">0.0</span> <span class="Stat">~</span><span class="Idnt">g</span>:<span class="Cnst">0.0</span> <span class="Stat">~</span><span class="Idnt">b</span>:<span class="Cnst">1.0</span><span class="Stat">;</span>
+  glBegin <span class="Stat">~</span><span class="Idnt">primitive</span>:<span class="Cnst">GL_TRIANGLES</span><span class="Stat">;</span>
+    glVertex2 <span class="Stat">~</span><span class="Idnt">x</span>:<span class="Stat">(</span>-<span class="Cnst">1.0</span><span class="Stat">) <span class="Stat">~</span><span class="Idnt">y</span>:(</span>-<span class="Cnst">1.0</span><span class="Stat">);</span>
+    glVertex2 <span class="Stat">~</span><span class="Idnt">x</span>:<span class="Stat">(</span> <span class="Cnst">0.0</span><span class="Stat">) <span class="Stat">~</span><span class="Idnt">y</span>:(</span> <span class="Cnst">1.0</span><span class="Stat">);</span>
+    glVertex2 <span class="Stat">~</span><span class="Idnt">x</span>:<span class="Stat">(</span> <span class="Cnst">1.0</span><span class="Stat">) <span class="Stat">~</span><span class="Idnt">y</span>:(</span>-<span class="Cnst">1.0</span><span class="Stat">);</span>
   glEnd <span class="Cnst">()</span><span class="Stat">;</span>
   glFlush <span class="Cnst">()</span><span class="Stat">;</span>
 <span class="Stat">;;</span>
 
 <span class="Stat">let</span> <span class="Cnst">()</span> <span class="Stat">=</span>
-  ignore<span class="Stat">(</span>glutInit <span class="PrPr">Sys</span>.argv<span class="Stat">);</span>
-  glutInitDisplayMode <span class="Stat">[</span><span class="Cnst">GLUT_SINGLE</span><span class="Stat">];</span>
+  ignore<span class="Stat">(</span>glutInit <span class="Stat">~</span><span class="Idnt">argv</span>:<span class="PrPr">Sys</span>.argv<span class="Stat">);</span>
+  glutInitDisplayMode <span class="Stat">~</span><span class="Idnt">mode</span>:<span class="Stat">[</span><span class="Cnst">GLUT_SINGLE</span><span class="Stat">];</span>
   ignore<span class="Stat">(</span>glutCreateWindow <span class="Stat">~</span><span class="Idnt">title</span>:<span class="Cnst">&quot;simple demo&quot;</span><span class="Stat">)</span><span class="Stat">;</span>
   glutDisplayFunc <span class="Stat">~</span><span class="Idnt">display</span><span class="Stat">;</span>
   glutMainLoop <span class="Cnst">()</span><span class="Stat">;</span>
@@ -310,7 +310,7 @@ pre {
     Here is what this script will output:
   </div>
 
-  <img src="./simple-demo.png" style="margin:10px 16%;" />
+  <img src="./ressources/simple-demo.png" style="margin:10px 16%;" />
 
 
 
