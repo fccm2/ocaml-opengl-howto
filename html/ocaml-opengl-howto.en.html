@@ -381,7 +381,7 @@ pre {
 <span class="Stat">;;</span>
 
 <span class="Stat">let</span> <span class="Cnst">()</span> <span class="Stat">=</span>
-  ignore<span class="Stat">(</span>glutInit <span class="PrPr">Sys</span>.argv<span class="Stat">);</span>
+  ignore<span class="Stat">(</span>glutInit <span class="Stat">~</span><span class="Idnt">argv</span>:<span class="PrPr">Sys</span>.argv<span class="Stat">);</span>
   glutInitDisplayMode <span class="Stat">[</span><span class="Cnst">GLUT_DOUBLE</span><span class="Stat">];</span>
   ignore<span class="Stat">(</span>glutCreateWindow <span class="Stat">~</span><span class="Idnt">title</span>:<span class="Cnst">&quot;simple demo&quot;</span><span class="Stat">);</span>
   glutDisplayFunc <span class="Stat">~</span><span class="Idnt">display</span><span class="Stat">;</span>
@@ -467,7 +467,7 @@ pre {
 <span class="Stat">;;</span>
 
 <span class="Stat">let</span> <span class="Cnst">()</span> <span class="Stat">=</span>
-  ignore<span class="Stat">(</span>glutInit <span class="PreProc">Sys</span>.argv<span class="Stat">)</span><span class="Stat">;</span>
+  ignore<span class="Stat">(</span>glutInit <span class="Stat">~</span><span class="Idnt">argv</span>:<span class="PreProc">Sys</span>.argv<span class="Stat">)</span><span class="Stat">;</span>
   glutInitDisplayMode <span class="Stat">[</span><span class="Cnst">GLUT_DOUBLE</span><span class="Stat">]</span><span class="Stat">;</span>
   ignore<span class="Stat">(</span>glutCreateWindow <span class="Stat">~</span><span class="Idnt">title</span>:<span class="PreProc">Sys</span>.argv.<span class="Stat">(</span><span class="Cnst">0</span><span class="Stat">))</span><span class="Stat">;</span>
   glutDisplayFunc <span class="Stat">~</span><span class="Idnt">display</span><span class="Stat">;</span>
@@ -701,7 +701,7 @@ pre {
 <span class="Stat">;;</span>
 
 <span class="Stat">let</span> <span class="Cnst">()</span> <span class="Stat">=</span>
-  ignore<span class="Stat">(</span>glutInit <span class="PreProc">Sys</span>.argv<span class="Stat">)</span><span class="Stat">;</span>
+  ignore<span class="Stat">(</span>glutInit <span class="Stat">~</span><span class="Idnt">argv</span>:<span class="PreProc">Sys</span>.argv<span class="Stat">)</span><span class="Stat">;</span>
   glutInitDisplayMode <span class="Stat">[</span><span class="Cnst">GLUT_DOUBLE</span><span class="Stat">;</span> <span class="Cnst">GLUT_RGB</span><span class="Stat">]</span><span class="Stat">;</span>
   glutInitWindowSize <span class="Cnst">600</span> <span class="Cnst">600</span><span class="Stat">;</span>
   glutInitWindowPosition <span class="Cnst">100</span> <span class="Cnst">100</span><span class="Stat">;</span>
