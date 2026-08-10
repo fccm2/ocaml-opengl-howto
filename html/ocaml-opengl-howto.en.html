@@ -370,7 +370,7 @@ pre {
 <span class="Stat">open</span> <span class="PrPr">Glut</span>
 
 <span class="Stat">let</span> display <span class="Cnst">()</span> <span class="Stat">=</span>
-  glClear <span class="Stat">[</span><span class="Cnst">GL_COLOR_BUFFER_BIT</span><span class="Stat">];</span>
+  glClear <span class="Stat">~</span><span class="Idnt">mask</span>:<span class="Stat">[</span><span class="Cnst">GL_COLOR_BUFFER_BIT</span><span class="Stat">];</span>
   glRotate <span class="Stat">~</span><span class="Idnt">angle</span>:<span class="Stat">(</span><span class="PrPr">Sys</span>.time<span class="Cnst">()</span> <span class="Stat">*</span>. <span class="Cnst">0.2</span><span class="Stat">) ~</span><span class="Idnt">x</span>:<span class="Cnst">0.0</span> <span class="Stat">~</span><span class="Idnt">y</span>:<span class="Cnst">0.0</span> <span class="Stat">~</span><span class="Idnt">z</span>:<span class="Cnst">1.0</span><span class="Stat">;</span>
   glBegin <span class="Cnst">GL_TRIANGLES</span><span class="Stat">;</span>
   glColor3 <span class="Stat">~</span><span class="Idnt">r</span>:<span class="Cnst">1.0</span> <span class="Stat">~</span><span class="Idnt">g</span>:<span class="Cnst">0.0</span> <span class="Stat">~</span><span class="Idnt">b</span>:<span class="Cnst">0.0</span><span class="Stat">;</span>  glVertex2 <span class="Stat">(</span>-<span class="Cnst">1.0</span><span class="Stat">) (</span>-<span class="Cnst">1.0</span><span class="Stat">);</span>
@@ -421,7 +421,7 @@ pre {
 <span class="Stat">let</span> anglex <span class="Stat">=</span> ref <span class="Cnst">0</span>
 
 <span class="Stat">let</span> display <span class="Cnst">()</span> <span class="Stat">=</span>
-  glClear <span class="Stat">[</span><span class="Cnst">GL_COLOR_BUFFER_BIT</span><span class="Stat">]</span><span class="Stat">;</span>
+  glClear <span class="Stat">~</span><span class="Idnt">mask</span>:<span class="Stat">[</span><span class="Cnst">GL_COLOR_BUFFER_BIT</span><span class="Stat">]</span><span class="Stat">;</span>
   glLoadIdentity <span class="Cnst">()</span><span class="Stat">;</span>
   glRotate <span class="Statement">~</span><span class="Identifier">angle</span>:<span class="Statement">(</span><span class="Type">float</span><span class="Statement">(</span>- <span class="Statement">!</span>angley<span class="Statement">))</span> <span class="Statement">~</span><span class="Identifier">x</span>:<span class="Constant">1.0</span> <span class="Statement">~</span><span class="Identifier">y</span>:<span class="Constant">0.0</span> <span class="Statement">~</span><span class="Identifier">z</span>:<span class="Constant">0.0</span><span class="Statement">;</span>
   glRotate <span class="Statement">~</span><span class="Identifier">angle</span>:<span class="Statement">(</span><span class="Type">float</span><span class="Statement">(</span>- <span class="Statement">!</span>anglex<span class="Statement">))</span> <span class="Statement">~</span><span class="Identifier">x</span>:<span class="Constant">0.0</span> <span class="Statement">~</span><span class="Identifier">y</span>:<span class="Constant">1.0</span> <span class="Statement">~</span><span class="Identifier">z</span>:<span class="Constant">0.0</span><span class="Statement">;</span>
@@ -622,7 +622,7 @@ pre {
 
 
 <span class="Stat">let</span> display <span class="Cnst">()</span> <span class="Stat">=</span>
-  glClear <span class="Stat">[</span><span class="Cnst">GL_COLOR_BUFFER_BIT</span><span class="Stat">]</span><span class="Stat">;</span>
+  glClear <span class="Stat">~</span><span class="Idnt">mask</span>:<span class="Stat">[</span><span class="Cnst">GL_COLOR_BUFFER_BIT</span><span class="Stat">]</span><span class="Stat">;</span>
   glLoadIdentity <span class="Cnst">()</span><span class="Stat">;</span>
 
   glPointSize <span class="Cnst">5.0</span><span class="Stat">;</span>
